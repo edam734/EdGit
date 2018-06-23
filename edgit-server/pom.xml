@@ -5,16 +5,12 @@
 		<groupId>com.edgit</groupId>
 		<artifactId>EdGit</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../EdGit</relativePath>
 	</parent>
 	<artifactId>edgit-server</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>6.2</version>
-		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>

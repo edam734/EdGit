@@ -1,0 +1,7 @@
+com\edgit\server\jsf\services\UserDetails.class
+com\edgit\server\jsf\services\User.class
+com\edgit\server\filesystem\EdGitFile.class
+com\edgit\server\jsf\services\SignIn.class
+com\edgit\server\filesystem\Utils$1.class
+com\edgit\server\filesystem\Utils.class
+com\edgit\server\jsf\services\Testes.class
