@@ -3,6 +3,7 @@ package com.edgit.server.jsf.services;
 import java.io.Serializable;
 
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
@@ -11,10 +12,17 @@ public class UserDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	private UserManager userManager;
+
 	private User user;
 
 	public void onload() {
-		user = new User();
+		if (userManager.getCurrentUser() != null) {
+			user = userManager.getCurrentUser();
+		} else {
+			user = new User();
+		}
 	}
 
 	public User getUser() {
@@ -28,6 +36,6 @@ public class UserDetails implements Serializable {
 	public String submit() {
 		// TO DO
 		System.out.println("Salvou o utilizador numa BD.");
-		return "";
+		return userManager.saveUser(user);
 	}
 }

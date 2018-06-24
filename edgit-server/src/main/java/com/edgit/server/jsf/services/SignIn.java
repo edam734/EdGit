@@ -1,6 +1,7 @@
 package com.edgit.server.jsf.services;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
@@ -9,6 +10,9 @@ public class SignIn {
 
 	private String username;
 	private String password;
+	
+	@Inject
+	private UserManager userManager;
 
 	public String getUsername() {
 		return username;
@@ -28,8 +32,7 @@ public class SignIn {
 
 	public String submit() {
 		// TO DO
-		System.out.println("Botão submit pressionado!!");
-		return "";
+		return userManager.signIn(getUsername(), getPassword());
 	}
 
 }
