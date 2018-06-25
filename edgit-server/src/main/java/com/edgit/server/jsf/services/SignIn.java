@@ -31,7 +31,6 @@ public class SignIn {
 	}
 
 	public String submit() {
-		// TO DO
 		return userManager.signIn(getUsername(), getPassword());
 	}
 

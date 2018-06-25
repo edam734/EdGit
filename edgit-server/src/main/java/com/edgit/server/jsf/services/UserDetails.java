@@ -34,7 +34,6 @@ public class UserDetails implements Serializable {
 	}
 
 	public String submit() {
-		// TO DO
 		System.out.println("Salvou o utilizador numa BD.");
 		return userManager.saveUser(user);
 	}

@@ -21,7 +21,7 @@ public class UserManager implements Serializable {
 			return ""; // stay in the same page
 		}
 		currentUser = user;
-		return ""; // go to home page
+		return "homepage"; // go to home page
 	}
 
 	public User getCurrentUser() {
@@ -35,7 +35,6 @@ public class UserManager implements Serializable {
 	public String saveUser(User user) {
 		userService.saveUser(user); 
 		currentUser = user;
-		return ""; // Home Page
+		return "homepage"; // Home Page
 	}
-
 }

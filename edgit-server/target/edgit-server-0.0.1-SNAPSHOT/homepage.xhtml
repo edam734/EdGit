@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/page-template.xhtml">
+    <ui:param name="pageTitle" value="Home Page"/>
+	<ui:define name="panel-main">
+		<section>
+			<h2>Os seus repositórios</h2>
+			<h:form>
+				<ui:repeat value="#{userRepositories.repositories}" var="repository">
+					<ui:decorate template="/project-summary.xhtml">
+						<ui:param name="repository" value="#{repository}" />
+					</ui:decorate>
+				</ui:repeat>
+			</h:form>
+		</section>
+	</ui:define>
+</ui:composition>
+</html>
