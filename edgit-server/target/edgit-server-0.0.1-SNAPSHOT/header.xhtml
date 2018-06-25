@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<ui:component>
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition>
 	<header>
-		<p>Bem vindo ao EdGit</p>
+		<ui:fragment rendered="#{not userManager.signedIn}">
+			<p>Bem vindo ao EdGit, visitante</p>
+			<p>
+				Por favor
+				<h:outputLink value="welcome.xhtml">inicie a sessão</h:outputLink>
+				ou
+				<h:outputLink value="user-details.xhtml">registe-se</h:outputLink>
+				.
+			</p>
+		</ui:fragment>
+
+		<ui:fragment rendered="#{userManager.signedIn}">
+			<h:form>
+				<h1>Bem vindo ao EdGit, #{userManager.currentUser.firstName}!</h1>
+				<p>
+					Actualize o seu
+					<h:outputLink value="user-details.xhtml">perfil</h:outputLink>
+					ou
+					<h:commandLink action="#{userManager.signOut}">termine a sessão</h:commandLink>
+					.
+				</p>
+			</h:form>
+		</ui:fragment>
 	</header>
-</ui:component>
+</ui:composition>
 </html>
+<!-- 	<header> -->
+<!-- 		<p>Bem vindo ao EdGit</p> -->
+<!-- 	</header> -->

@@ -1,12 +1,14 @@
-com\edgit\server\jsf\services\UserDetails.class
 com\edgit\server\jsf\services\User.class
 com\edgit\server\filesystem\EdGitFile.class
 com\edgit\server\jsf\services\UserRepositories.class
+com\edgit\server\jsf\services\RepositoryServiceImpl.class
 com\edgit\server\jsf\services\SignIn.class
 com\edgit\server\filesystem\Utils$1.class
 com\edgit\server\jsf\services\UserManager.class
-com\edgit\server\jsf\services\UserService.class
 com\edgit\server\jsf\services\UserServiceImpl.class
+com\edgit\server\jsf\services\Testes.class
+com\edgit\server\jsf\services\UserDetails.class
+com\edgit\server\jsf\services\RepositoryService.class
+com\edgit\server\jsf\services\UserService.class
 com\edgit\server\filesystem\Utils.class
 com\edgit\server\jsf\services\Repository.class
-com\edgit\server\jsf\services\Testes.class
