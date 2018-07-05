@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/page-template.xhtml">
+	<f:metadata>
+		<f:viewParam name="fileName"
+			value="#{userRepositories.filenameToSearch}" />
+		<f:viewAction action="#{userRepositories.searchForSubfiles}" />
+	</f:metadata>
+	<ui:define name="panel-main">
+		<ui:fragment rendered="#{not empty userRepositories.subfiles}">
+			<section>
+				<h:form>
+					<h:dataTable value="#{userRepositories.subfiles}" var="line">
+						<h:column>
+							<f:facet name="header">Nome</f:facet>
+							<ui:fragment rendered="#{line.isFile}">
+								<h:outputText value="#{line.filename}" />
+								<!-- TODO: se o utilizador tiver permissões, pode baixar o ficheiro -->
+							</ui:fragment>
+							<ui:fragment rendered="#{not line.isFile}">
+								<h:outputLink value="file-content.xhtml">
+									<f:param name="fileName" value="#{line.filename}" />
+										#{line.filename}
+								</h:outputLink>
+							</ui:fragment>
+						</h:column>
+					</h:dataTable>
+				</h:form>
+			</section>
+		</ui:fragment>
+	</ui:define>
+</ui:composition>
+</html>

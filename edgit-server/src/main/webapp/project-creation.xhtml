@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/page-template.xhtml">
+	<ui:param name="pageTitle" value="New Project" />
+	<ui:define name="panel-main">
+		<section>
+			<h:form>
+				<h2>Crie um novo Repositório</h2>
+				<p>Um repositório contém todos os arquivos do seu projeto,
+					incluindo o histórico de revisão.</p>
+				<h:panelGrid columns="2">
+					<h:outputLabel for="repoName">Nome do Projecto</h:outputLabel>
+					<h:inputText id="repoName"
+						value="#{userRepositories.repositoryName}" size="30" />
+					<h:outputLabel for="description">Descrição do Projecto</h:outputLabel>
+					<h:inputTextarea id="description" cols="50" rows="2"
+						value="#{userRepositories.description}" />
+				</h:panelGrid>
+
+				<h:commandButton value="Crie um novo projecto"
+					action="#{userRepositories.createRepository}" />
+			</h:form>
+		</section>
+	</ui:define>
+</ui:composition>
+</html>

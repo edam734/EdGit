@@ -26,11 +26,10 @@ public class UserManager implements Serializable {
 		currentUser = user;
 		return "homepage"; // go to home page
 	}
-	
+
 	public boolean isSignedIn() {
 		return currentUser != null;
 	}
-	
 
 	public String signOut() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -51,3 +50,6 @@ public class UserManager implements Serializable {
 		return "homepage"; // Home Page
 	}
 }
+
+
+
