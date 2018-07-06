@@ -6,9 +6,9 @@ import com.edgit.server.jpa.GitFile;
 
 public interface RepositoryService {
 
-	List<Repository> getRepositoryByUsername(String username);
+	void createRoot(String repositoryName);
 
-	List<GitFile> getFilesByParent(GitFile folder);
+	void createRepository(String repositoryName, String description);
 
-	List<GitFile> getFilesByParentName(String name);
+	List<GitFile> getSubfiles(String name);
 }

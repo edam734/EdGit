@@ -6,13 +6,13 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition>
 	<section>
-		<h3>#{repository.name}</h3>
+		<h3>#{repository.filename}</h3>
 		<p>#{repository.description}</p>
 		<p>Data da criação: #{repository.inceptionDate}</p>
-		<p>
-			Ir para projecto
-		</p>
+		<h:outputLink value="file-content.xhtml">
+			<f:param name="fileName" value="#{repository.filename}" />
+			#{repository.filename}
+		</h:outputLink>
 	</section>
 </ui:composition>
 </html>
- 

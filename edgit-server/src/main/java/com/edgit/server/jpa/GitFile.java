@@ -98,4 +98,10 @@ public class GitFile implements Serializable {
 		this.subfiles = subfiles;
 	}
 
+	@Override
+	public String toString() {
+		return "GitFile [fileId=" + fileId + ", folder=" + folder + ", filename=" + filename + ", isFile=" + isFile
+				+ "]";
+	}
+
 }

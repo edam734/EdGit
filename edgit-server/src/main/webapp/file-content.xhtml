@@ -6,15 +6,17 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/page-template.xhtml">
 	<f:metadata>
-		<f:viewParam name="fileName"
-			value="#{userRepositories.filenameToSearch}" />
-		<f:viewAction action="#{userRepositories.searchForSubfiles}" />
+		<f:viewParam name="fileName" value="#{fileContentPage.filename}" />
+		<f:viewAction action="#{fileContentPage.searchSubfiles}" />
 	</f:metadata>
 	<ui:define name="panel-main">
-		<ui:fragment rendered="#{not empty userRepositories.subfiles}">
+		<ui:fragment rendered="#{empty fileContentPage.subfiles}">
+			<p>-- Pasta ainda sem conteúdo. --</p>
+		</ui:fragment>
+		<ui:fragment rendered="#{not empty fileContentPage.subfiles}">
 			<section>
 				<h:form>
-					<h:dataTable value="#{userRepositories.subfiles}" var="line">
+					<h:dataTable value="#{fileContentPage.subfiles}" var="line">
 						<h:column>
 							<f:facet name="header">Nome</f:facet>
 							<ui:fragment rendered="#{line.isFile}">

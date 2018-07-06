@@ -17,7 +17,10 @@ public class UserDetails implements Serializable {
 
 	private User user;
 
+	// private String submit;
+
 	public void onload() {
+		System.out.println("Detalhes do utilizador!!");
 		if (userManager.getCurrentUser() != null) {
 			user = userManager.getCurrentUser();
 		} else {

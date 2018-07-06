@@ -6,9 +6,8 @@
 <ui:composition>
 	<header>
 		<ui:fragment rendered="#{not userManager.signedIn}">
-			<p>Bem vindo ao EdGit, visitante</p>
 			<p>
-				Por favor
+				Bem vindo ao EdGit, visitante. Por favor
 				<h:outputLink value="welcome.xhtml">inicie a sessão</h:outputLink>
 				ou
 				<h:outputLink value="user-details.xhtml">registe-se</h:outputLink>
@@ -18,9 +17,9 @@
 
 		<ui:fragment rendered="#{userManager.signedIn}">
 			<h:form>
-				<h1>Bem vindo ao EdGit, #{userManager.currentUser.firstName}!</h1>
 				<p>
-					Actualize o seu
+					Bem vindo ao EdGit, #{userManager.currentUser.firstName}! Actualize
+					o seu
 					<h:outputLink value="user-details.xhtml">perfil</h:outputLink>
 					ou
 					<h:commandLink action="#{userManager.signOut}">termine a sessão</h:commandLink>
@@ -31,6 +30,3 @@
 	</header>
 </ui:composition>
 </html>
-<!-- 	<header> -->
-<!-- 		<p>Bem vindo ao EdGit</p> -->
-<!-- 	</header> -->

@@ -2,27 +2,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<ui:composition template="/page-template.xhtml">
+<ui:composition template="/page-template.xhtml"> 
 	<ui:param name="pageTitle" value="Home Page" />
 	<ui:define name="panel-main">
-		<ui:fragment rendered="#{empty userRepositories.repositories}">
+		<ui:fragment rendered="#{empty homePage.repositories}">
 			<h2>Ainda não tem projectos criados.</h2>
 		</ui:fragment>
-		<ui:fragment rendered="#{not empty userRepositories.repositories}">
+		<ui:fragment rendered="#{not empty homePage.repositories}">
 			<section>
-				<h:form>
+				<h:form> 
 					<h2>Os seus repositórios</h2>
-					<ui:repeat value="#{userRepositories.repositories}"
+					<ui:repeat value="#{homePage.repositories}"
 						var="repository">
 						<ui:decorate template="/project-summary.xhtml">
 							<ui:param name="repository" value="#{repository}" />
 						</ui:decorate>
 					</ui:repeat>
 				</h:form>
-			</section>
+			</section> 
 		</ui:fragment>
 		<h:outputLink value="project-creation.xhtml">Comece um novo Projecto</h:outputLink>
 	</ui:define>
-</ui:composition>
+</ui:composition> 
 </html>

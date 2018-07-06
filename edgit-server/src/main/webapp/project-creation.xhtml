@@ -14,14 +14,14 @@
 				<h:panelGrid columns="2">
 					<h:outputLabel for="repoName">Nome do Projecto</h:outputLabel>
 					<h:inputText id="repoName"
-						value="#{userRepositories.repositoryName}" size="30" />
+						value="#{repositoryCreator.repositoryName}" size="30" />
 					<h:outputLabel for="description">Descrição do Projecto</h:outputLabel>
 					<h:inputTextarea id="description" cols="50" rows="2"
-						value="#{userRepositories.description}" />
+						value="#{repositoryCreator.description}" />
 				</h:panelGrid>
 
 				<h:commandButton value="Crie um novo projecto"
-					action="#{userRepositories.createRepository}" />
+					action="#{repositoryCreator.createRepository}" />
 			</h:form>
 		</section>
 	</ui:define>
