@@ -1,57 +1,39 @@
 package com.edgit.server.jsf.services;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import org.hibernate.Session;
-
 import com.edgit.server.jpa.GitFile;
-import com.edgit.server.jpa.HibernateUtilities;
-import com.edgit.server.jpa.dao.GitFileDAO;
 
 @ApplicationScoped
 public class RepositoryServiceImpl implements RepositoryService {
 
+	private static final String EMPTY_STRING = "";
+
+	PersistenceHandler persistenceHandler;
+
 	private GitFile root;
 
-	public void createRoot(String repositoryName) {
-		Session session = HibernateUtilities.getSessionFactory().openSession();
-		session.beginTransaction();
-
+	public RepositoryServiceImpl() {
 		root = new GitFile();
-		root.setFilename(repositoryName);
-		root.setInceptionDate(LocalDate.now());
-		root.setFolder(null);
-		root.setIsFile(false);
+		persistenceHandler = new PersistenceHandler();
+	}
 
-		session.save(root);
-		session.getTransaction().commit();
-		session.close();
+	public GitFile getRoot() {
+		return root;
+	}
+
+	public void createRoot(String repositoryName) {
+		persistenceHandler.create(null, getRoot(), repositoryName, EMPTY_STRING);
 	}
 
 	public void createRepository(String repositoryName, String description) {
-		Session session = HibernateUtilities.getSessionFactory().openSession();
-		session.beginTransaction();
-
 		GitFile repository = new GitFile();
-		repository.setFilename(repositoryName);
-		repository.setDescription(description);
-		repository.setInceptionDate(LocalDate.now());
-		repository.setFolder(root);
-		repository.setIsFile(false);
-
-		session.save(repository);
-		session.getTransaction().commit();
-		session.close();
+		persistenceHandler.create(getRoot(), repository, repositoryName, description);
 	}
-	
+
 	public List<GitFile> getSubfiles(String name) {
-		GitFileDAO dao = new GitFileDAO();
-		List<GitFile> subfiles =  dao.findSubfilesOfFolder(name);
-		
-		return subfiles;
+		return persistenceHandler.getSubfiles(name);
 	}
-
 }

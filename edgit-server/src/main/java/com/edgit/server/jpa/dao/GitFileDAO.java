@@ -2,22 +2,24 @@ package com.edgit.server.jpa.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import com.edgit.server.jpa.GitFile;
-import com.edgit.server.jpa.HibernateUtilities;
-
 
 public class GitFileDAO {
 
+	private EntityManager entityManager;
+
+	public GitFileDAO(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
 	public List<GitFile> findSubfilesOfFolder(String repositoryName) {
-		Session session = HibernateUtilities.getSessionFactory().openSession();
-		@SuppressWarnings("unchecked")
-		Query<GitFile> query = session.getNamedQuery("HQL_GET_SUBFILES_OF_FOLDER_BY_NAME");
-		query.setParameter(0, repositoryName);
-		List<GitFile> subfiles = query.getResultList();
-		session.close();
-		return subfiles; 
+		TypedQuery<GitFile> query = entityManager.createNamedQuery(GitFile.QUERY_NAME_FIND_SUBFILES_OF_FOLDER,
+				GitFile.class);
+		query.setParameter(GitFile.QUERY_PARAM_REPOSITORY, repositoryName);
+
+		return query.getResultList();
 	}
 }

@@ -13,14 +13,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "GITFILE")
+@NamedQueries(@NamedQuery(name = GitFile.QUERY_NAME_FIND_SUBFILES_OF_FOLDER, query = GitFile.QUERY_FIND_SUBFILES_OF_FOLDER))
 public class GitFile implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String QUERY_PARAM_REPOSITORY = "repository";
+
+	public static final String QUERY_NAME_FIND_SUBFILES_OF_FOLDER = "GitFile.findSubfilesOfFolder";
+
+	public static final String QUERY_FIND_SUBFILES_OF_FOLDER = "select file from GitFile as file where file.folder.fileId = (select fileId from GitFile where filename = :"
+			+ GitFile.QUERY_PARAM_REPOSITORY + ")";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
