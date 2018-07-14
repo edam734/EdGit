@@ -32,8 +32,10 @@ public class PersistenceHandler {
 		entityManagerFactory.close();
 	}
 
-	public void create(GitFile parent, GitFile gitFile, String filename, String description) {
+	public GitFile create(GitFile parent, String filename, String description) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
+
+		GitFile gitFile = new GitFile();
 		try {
 			em.getTransaction().begin();
 			gitFile.setFilename(filename);
@@ -45,11 +47,13 @@ public class PersistenceHandler {
 			em.persist(gitFile);
 
 			em.getTransaction().commit();
+
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 		} finally {
 			em.close();
 		}
+		return gitFile;
 	}
 
 	public List<GitFile> getSubfiles(String name) {

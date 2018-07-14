@@ -7,6 +7,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.edgit.server.domain.User;
+
 @Named
 @SessionScoped
 public class UserManager implements Serializable {

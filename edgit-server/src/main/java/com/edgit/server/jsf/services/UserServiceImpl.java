@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.edgit.server.domain.User;
+import com.edgit.server.jpa.GitFile;
+
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
 
@@ -23,7 +26,10 @@ public class UserServiceImpl implements UserService {
 	public void saveUser(User user) {
 		// Creates the root folder that will serve to contain all the projects
 		// of this user.
-		repositoryService.createRoot(user.getUsername());
+		GitFile root = repositoryService.createRoot(user.getUsername());
+		// When the transaction ends, the flush will happen, and the entity
+		// outside of the transaction will appear with the generated ID.
+		user.setRootRepository(root);
 		users.put(user.getUsername(), user);
 	}
 

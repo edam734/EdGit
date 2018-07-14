@@ -3,7 +3,6 @@ package com.edgit.server.jsf.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -11,6 +10,9 @@ import com.edgit.server.jpa.GitFile;
 
 @Stateless
 public class RepositoryManager {
+
+	@Inject
+	private UserManager userManager;
 
 	@Inject
 	private RepositoryServiceImpl repositoryService;
@@ -25,6 +27,7 @@ public class RepositoryManager {
 	}
 
 	public void createRepository(String repositoryName, String description) {
-		repositoryService.createRepository(repositoryName, description);
+		GitFile userRoot = userManager.getCurrentUser().getRootRepository();
+		repositoryService.createRepository(userRoot, repositoryName, description);
 	}
 }
