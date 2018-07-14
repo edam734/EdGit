@@ -1,6 +1,8 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.domain;
 
 import java.util.Date;
+
+import com.edgit.server.jpa.GitFile;
 
 public class User {
 
@@ -11,6 +13,7 @@ public class User {
 	private String emailAddress;
 	private String phoneNumber;
 	private Date birthDate;
+	private GitFile rootRepository;
 
 	public String getUsername() {
 		return username;
@@ -66,6 +69,14 @@ public class User {
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public GitFile getRootRepository() {
+		return rootRepository;
+	}
+
+	public void setRootRepository(GitFile rootRepository) {
+		this.rootRepository = rootRepository;
 	}
 
 }
