@@ -16,7 +16,7 @@ import net.datastructures.Position;
  * @author Eduardo Amorim
  *
  */
-public class Rede { 
+public class Rede {
 
     private TreeWrapper<Character> tree;
     private Queue<Character> reserva;
