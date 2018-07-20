@@ -14,9 +14,6 @@ public class PersistenceHandler {
 
 	public static final String PUNIT_NAME = "edgitserverPU";
 
-	// @PersistenceContext(unitName = "edgitserverPU")
-	// private EntityManager em;
-
 	private static final EntityManagerFactory entityManagerFactory;
 
 	static {

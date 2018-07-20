@@ -5,14 +5,7 @@
 		<groupId>com.edgit</groupId>
 		<artifactId>EdGit</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../EdGit</relativePath>
 	</parent>
-	<artifactId>edgit-client</artifactId>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.edgit</groupId>
-			<artifactId>edgit-commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
+	<artifactId>edgit-commons</artifactId>
 </project>
