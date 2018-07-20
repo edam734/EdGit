@@ -115,7 +115,7 @@ public class NetworkFile implements Serializable {
 	 */
 	private BufferedWriter getWriter() throws IOException {
 		if (writer == null) {
-			serWriter();
+			setWriter();
 		}
 		return writer;
 	}
@@ -130,7 +130,7 @@ public class NetworkFile implements Serializable {
 	 * @throws IOException
 	 *             if failed or interrupted I/O operations occurs.
 	 */
-	public void serWriter(Path path) throws IOException {
+	public void setWriter(Path path) throws IOException {
 		writer = Files.newBufferedWriter(path);
 	}
 
@@ -144,7 +144,7 @@ public class NetworkFile implements Serializable {
 	 * @throws IOException
 	 *             if failed or interrupted I/O operations occurs.
 	 */
-	public void serWriter() throws IOException {
-		serWriter(this.file.toPath());
+	public void setWriter() throws IOException {
+		setWriter(this.file.toPath());
 	}
 }
