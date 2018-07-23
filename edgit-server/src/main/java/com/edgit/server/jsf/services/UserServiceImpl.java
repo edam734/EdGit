@@ -1,5 +1,6 @@
 package com.edgit.server.jsf.services;
 
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -7,7 +8,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.edgit.server.domain.User;
+import com.edgit.server.filesystem.FileSystemResolver;
 import com.edgit.server.jpa.GitFile;
+import com.edgit.server.jsf.ServerRepositoryHandler;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -30,7 +33,10 @@ public class UserServiceImpl implements UserService {
 		// When the transaction ends, the flush will happen, and the entity
 		// outside of the transaction will appear with the generated ID.
 		user.setRootRepository(root);
+		// Create the remote repository for this user
+		FileSystemResolver.makeDirectory(
+				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
+		// Saves user in DB
 		users.put(user.getUsername(), user);
 	}
-
 }

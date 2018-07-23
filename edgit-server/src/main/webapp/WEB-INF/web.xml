@@ -19,8 +19,12 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
+	<context-param>
+		<param-name>upload.location</param-name>
+		<param-value>EdGitServerRepository</param-value>
+	</context-param>
 
 	<welcome-file-list>
 		<welcome-file>welcome.xhtml</welcome-file>
 	</welcome-file-list>
-</web-app> 
+</web-app>

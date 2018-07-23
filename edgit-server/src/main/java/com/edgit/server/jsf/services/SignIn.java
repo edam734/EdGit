@@ -1,5 +1,7 @@
 package com.edgit.server.jsf.services;
 
+import java.io.File;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,5 +35,4 @@ public class SignIn {
 	public String submit() {
 		return userManager.signIn(getUsername(), getPassword());
 	}
-
 }
