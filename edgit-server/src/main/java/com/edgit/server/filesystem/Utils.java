@@ -16,7 +16,7 @@ public class Utils {
 	
 	public static void makeDirectory(File file) {
 		if (!file.exists()) {
-			file.mkdir();
+			file.mkdirs();
 		}
 	}
 

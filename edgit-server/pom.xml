@@ -5,7 +5,7 @@
 		<groupId>com.edgit</groupId>
 		<artifactId>EdGit</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../EdGit</relativePath>
+<!-- 		<relativePath>../EdGit</relativePath> -->
 	</parent>
 	<artifactId>edgit-server</artifactId> 
 	<packaging>war</packaging>
@@ -30,11 +30,11 @@
 			<version>5.1.9</version>
 		</dependency>
 		
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.edgit</groupId> -->
-<!-- 			<artifactId>edgit-commons</artifactId> -->
-<!-- 		<version>0.0.1-SNAPSHOT</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>com.edgit</groupId>
+			<artifactId>edgit-commons</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

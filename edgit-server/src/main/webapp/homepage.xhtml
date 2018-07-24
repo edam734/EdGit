@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/page-template.xhtml">
 	<ui:param name="pageTitle" value="Home Page" />
@@ -23,9 +24,11 @@
 			</section>
 		</ui:fragment>
 		<h:outputLink value="project-creation.xhtml">Comece um novo Projecto</h:outputLink>
+		<br />
 		<h:form enctype="multipart/form-data">
 			<h:outputText>Faça upload de um ficheiro: </h:outputText>
-			<h:inputFile value="#{uploadFile.part}" />
+			<h:inputFile value="#{uploadFile.part}" a:multiple="true"
+				a:directory="true" a:webkitdirectory="true" />
 			<br />
 			<h:commandButton value="upload" action="#{uploadFile.upload()}" />
 		</h:form>

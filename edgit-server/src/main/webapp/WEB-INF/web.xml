@@ -23,6 +23,10 @@
 		<param-name>upload.location</param-name>
 		<param-value>EdGitServerRepository</param-value>
 	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+		<param-value>/WEB-INF/tags/passthrough.taglib.xml</param-value>
+	</context-param>
 
 	<welcome-file-list>
 		<welcome-file>welcome.xhtml</welcome-file>
