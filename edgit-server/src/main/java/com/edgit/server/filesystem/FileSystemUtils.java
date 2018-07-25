@@ -85,9 +85,9 @@ public class FileSystemUtils {
 		int newVersion = ++version;
 		writeAnEntry(indexFile.toFile(), Integer.toString(newVersion), " : ", username);
 
-		final Path versionedFile = updateFilePathResolver.getVersionedFilename(newVersion);
+		target = updateFilePathResolver.getVersionedFilename(newVersion);
 
-		return createNewVersion(in, versionedFile, options);
+		return createNewVersion(in, target, options);
 	}
 
 	private static boolean createNewVersion(final InputStream in, final Path target, CopyOption... options)
