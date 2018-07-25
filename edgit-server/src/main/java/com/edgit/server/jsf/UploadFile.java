@@ -37,12 +37,14 @@ public class UploadFile implements Serializable {
 	}
 
 	public String upload() throws ServletException, IOException {
+		File userRepository = filepathHandler.getUserRepository();
+
 		for (Part p : getAllParts(part)) {
 			String fileName = p.getSubmittedFileName();
-			File file = new File(filepathHandler.getUserRepository(), fileName);
+			File file = new File(userRepository, fileName);
 
 			try (InputStream input = p.getInputStream()) {
-				filepathHandler.copyFile(input, file.toPath());
+				filepathHandler.uploadFile(input, file.toPath());
 			}
 		}
 		return "";
