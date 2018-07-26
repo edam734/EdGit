@@ -120,6 +120,17 @@ public class FileSystemUtils {
 		}
 	}
 
+	public static Path getDirectory(Path path) {
+		if (path.toFile().isDirectory()) {
+			return path;
+		}
+		return path.getParent();
+	}
+
+	public static String getPureFilename(Path path) {
+		return path.getFileName().toString();
+	}
+
 	static class BooleanResult {
 		static enum BooleanMessage {
 			ALREADY_EXISTS, CREATED, NOT_CREATED;

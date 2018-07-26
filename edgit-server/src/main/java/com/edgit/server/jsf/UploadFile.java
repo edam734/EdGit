@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import com.edgit.server.jsf.services.FilePathHandler;
+import com.edgit.server.jsf.services.RepositoryManager;
 
 @Named
 @SessionScoped
@@ -25,6 +28,9 @@ public class UploadFile implements Serializable {
 
 	@EJB
 	private FilePathHandler filepathHandler;
+
+	@EJB
+	private RepositoryManager repositoryManager;
 
 	private Part part;
 
@@ -43,11 +49,23 @@ public class UploadFile implements Serializable {
 			String fileName = p.getSubmittedFileName();
 			File file = new File(userRepository, fileName);
 
-			try (InputStream input = p.getInputStream()) {
-				filepathHandler.uploadFile(input, file.toPath());
-			}
+			writeOnDisk(p, file);
+			persist(fileName);
 		}
 		return "";
+	}
+
+	private void writeOnDisk(Part p, File file) throws IOException {
+		try (InputStream input = p.getInputStream()) {
+			filepathHandler.uploadFile(input, file.toPath());
+		}
+	}
+
+	private void persist(String fileName) {
+		Path path = Paths.get(fileName);
+		Path directory = filepathHandler.getDirectory(path);
+		String pureFilename = filepathHandler.getPureFilename(path);
+		repositoryManager.createEntry(directory, pureFilename, "(Todo)");
 	}
 
 	private static Collection<Part> getAllParts(Part part) throws ServletException, IOException {

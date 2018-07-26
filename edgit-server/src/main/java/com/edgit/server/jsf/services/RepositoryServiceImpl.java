@@ -1,5 +1,6 @@
 package com.edgit.server.jsf.services;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,7 +12,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 
 	private static final String EMPTY_STRING = "";
 
-	PersistenceHandler persistenceHandler;
+	private PersistenceHandler persistenceHandler;
 
 	public RepositoryServiceImpl() {
 		persistenceHandler = new PersistenceHandler();
@@ -29,4 +30,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 		return persistenceHandler.getSubfiles(name);
 	}
 
+	public boolean createEntry(Path path, String filename, GitFile repo, String description) {
+		return persistenceHandler.createEntry(path, filename, repo, description);
+	}
 }

@@ -32,4 +32,12 @@ public class FilePathHandler {
 	public void uploadFile(InputStream in, Path target, CopyOption... options) throws IOException {
 		FileSystemResolver.uploadFile(in, target, userManager.getCurrentUser().getUsername(), options);
 	}
+	
+	public Path getDirectory(Path path) {
+		return FileSystemResolver.getDirectory(path);
+	}
+
+	public String getPureFilename(Path path) {
+		return FileSystemResolver.getPureFilename(path);
+	}
 }

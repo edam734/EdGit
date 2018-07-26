@@ -20,17 +20,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "GITFILE")
-@NamedQueries(@NamedQuery(name = GitFile.QUERY_NAME_FIND_SUBFILES_OF_FOLDER, query = GitFile.QUERY_FIND_SUBFILES_OF_FOLDER))
+@NamedQueries({
+		@NamedQuery(name = GitFile.QUERY_NAME_FIND_SUBFILES_OF_FOLDER, query = GitFile.QUERY_FIND_SUBFILES_OF_FOLDER),
+		@NamedQuery(name = GitFile.QUERY_NAME_FIND_BY_NAME_AND_PARENTID, query = GitFile.QUERY_FIND_BY_NAME_AND_PARENTID) })
 public class GitFile implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String QUERY_PARAM_REPOSITORY = "repository";
 
+	public static final String QUERY_PARAM_NAME = "name";
+
+	public static final String QUERY_PARAM_PARENT_ID = "parentId";
+
 	public static final String QUERY_NAME_FIND_SUBFILES_OF_FOLDER = "GitFile.findSubfilesOfFolder";
+
+	public static final String QUERY_NAME_FIND_BY_NAME_AND_PARENTID = "GitFile.findByNameAndParentId";
 
 	public static final String QUERY_FIND_SUBFILES_OF_FOLDER = "select file from GitFile as file where file.folder.fileId = (select fileId from GitFile where filename = :"
 			+ GitFile.QUERY_PARAM_REPOSITORY + ")";
+
+	public static final String QUERY_FIND_BY_NAME_AND_PARENTID = "select file from GitFile as file where file.filename = :"
+			+ GitFile.QUERY_PARAM_NAME + " and file.folder.fileId = :" + GitFile.QUERY_PARAM_PARENT_ID;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.edgit.server.jsf.services;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +30,10 @@ public class RepositoryManager {
 	public void createRepository(String repositoryName, String description) {
 		GitFile userRoot = userManager.getCurrentUser().getRootRepository();
 		repositoryService.createRepository(userRoot, repositoryName, description);
+	}
+
+	public boolean createEntry(Path path, String filename, String description) {
+		GitFile repo = userManager.getCurrentUser().getRootRepository();
+		return repositoryService.createEntry(path, filename, repo, description);
 	}
 }

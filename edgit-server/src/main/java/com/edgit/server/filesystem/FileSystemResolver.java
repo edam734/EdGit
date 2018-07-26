@@ -16,4 +16,12 @@ public class FileSystemResolver {
 			throws IOException {
 		FileSystemUtils.uploadFile(in, target, "updateIndex (TODO)", username, options);
 	}
+
+	public static Path getDirectory(Path path) {
+		return FileSystemUtils.getDirectory(path);
+	}
+
+	public static String getPureFilename(Path path) {
+		return FileSystemUtils.getPureFilename(path);
+	}
 }
