@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.edgit.server.filesystem.FileSystemResolver;
+import com.edgit.server.filesystem.FileSystemUtils;
 import com.edgit.server.jsf.ServerRepositoryHandler;
 
 @Stateless
@@ -25,19 +25,22 @@ public class FilePathHandler {
 	}
 
 	public long copyFile(InputStream in, Path target, CopyOption... options) throws IOException {
-		FileSystemResolver.makeDirectory(new File(target.getParent().toString()));
+//		FileSystemResolver.makeDirectory(new File(target.getParent().toString()));
+		FileSystemUtils.makeDirectory(new File(target.getParent().toString()));
 		return Files.copy(in, target, options);
 	} 
 
 	public void uploadFile(InputStream in, Path target, CopyOption... options) throws IOException {
-		FileSystemResolver.uploadFile(in, target, userManager.getCurrentUser().getUsername(), options);
+//		FileSystemResolver.uploadFile(in, target, userManager.getCurrentUser().getUsername(), options);
+		String currentUser = userManager.getCurrentUser().getUsername();
+		FileSystemUtils.uploadFile(in, target, "updateIndex (TODO)", currentUser, options);
 	}
 	
 	public Path getDirectory(Path path) {
-		return FileSystemResolver.getDirectory(path);
+		return FileSystemUtils.getDirectory(path);
 	}
 
 	public String getPureFilename(Path path) {
-		return FileSystemResolver.getPureFilename(path);
+		return FileSystemUtils.getPureFilename(path);
 	}
 }

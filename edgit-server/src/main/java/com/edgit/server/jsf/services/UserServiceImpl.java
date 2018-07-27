@@ -8,7 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.edgit.server.domain.User;
-import com.edgit.server.filesystem.FileSystemResolver;
+import com.edgit.server.filesystem.FileSystemUtils;
 import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.ServerRepositoryHandler;
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 		// outside of the transaction will appear with the generated ID.
 		user.setRootRepository(root);
 		// Create the remote repository for this user
-		FileSystemResolver.makeDirectory(
+		FileSystemUtils.makeDirectory(
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
 		// Saves user in DB
 		users.put(user.getUsername(), user);
