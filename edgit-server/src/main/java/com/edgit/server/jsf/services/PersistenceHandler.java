@@ -34,6 +34,10 @@ public class PersistenceHandler {
 	}
 
 	public GitFile create(GitFile parent, String filename, String description) {
+		return create(parent, filename, description, false);
+	}
+
+	public GitFile create(GitFile parent, String filename, String description, boolean isFile) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 
 		GitFile gitFile = new GitFile();
@@ -43,7 +47,7 @@ public class PersistenceHandler {
 			gitFile.setInceptionDate(LocalDate.now());
 			gitFile.setDescription(description);
 			gitFile.setFolder(parent);
-			gitFile.setIsFile(false);
+			gitFile.setIsFile(isFile);
 
 			em.persist(gitFile);
 
@@ -96,11 +100,21 @@ public class PersistenceHandler {
 				parent = create(parent, directoryName, description);
 			}
 		}
-		if (filename != null) {
+		if (filename != null && !entryAlreadyExists(filename, parent.getFileId())) {
 			// lastly, creates the file entry
-			create(parent, filename, description);
+			create(parent, filename, description, true);
 		}
 		return true;
+	}
+	
+	private boolean entryAlreadyExists(String entryName, Long parentId) {
+		EntityManager em = getEntityManagerFactory().createEntityManager();
+		GitFileDAO dao = new GitFileDAO(em);
+		try {
+			return dao.findFileByNameAndParentId(entryName, parentId) != null;
+		} finally {
+			em.close();
+		}	
 	}
 
 	/**
@@ -140,7 +154,7 @@ public class PersistenceHandler {
 	 *            GitFile table
 	 * @param iterator
 	 *            The iterator of the path that advances one step by each
-	 *            iteration
+	 *            recursion
 	 * @param parent
 	 *            The last existing father who was found
 	 * @return a PathWrapper
@@ -161,7 +175,8 @@ public class PersistenceHandler {
 					sb.append(iterator.next());
 					sb.append(File.separator);
 				}
-				return new PathWrapper(Paths.get(sb.toString()), parent);
+				Path remainderPath = Paths.get(sb.toString());
+				return new PathWrapper(remainderPath, parent);
 			}
 		}
 		return new PathWrapper(null, parent); // path already exists!
