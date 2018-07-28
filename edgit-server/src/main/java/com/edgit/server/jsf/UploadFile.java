@@ -46,11 +46,11 @@ public class UploadFile implements Serializable {
 		File userRepository = filepathHandler.getUserRepository();
 
 		for (Part p : getAllParts(part)) {
-			String fileName = p.getSubmittedFileName();
-			File file = new File(userRepository, fileName);
+			String path = p.getSubmittedFileName();
+			File file = new File(userRepository, path);
 
 			writeOnDisk(p, file);
-			persist(fileName);
+			persist(path);
 		}
 		return "";
 	}
@@ -61,11 +61,11 @@ public class UploadFile implements Serializable {
 		}
 	}
 
-	private void persist(String fileName) {
-		Path path = Paths.get(fileName);
+	private void persist(String filepath) {
+		Path path = Paths.get(filepath);
 		Path directory = filepathHandler.getDirectory(path);
-		String pureFilename = filepathHandler.getPureFilename(path);
-		repositoryManager.createEntry(directory, pureFilename, "(Todo)");
+		String filename = filepathHandler.getFilename(path);
+		repositoryManager.createEntry(directory, filename, "(Todo)");
 	}
 
 	private static Collection<Part> getAllParts(Part part) throws ServletException, IOException {

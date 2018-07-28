@@ -52,7 +52,7 @@ public class GitFile implements Serializable {
 	@JoinColumn(name = "GITFILE_FOLDER")
 	private GitFile folder;
 
-	@Column(name = "GITFILE_NAME", nullable = false, length = 30)
+	@Column(name = "GITFILE_NAME", nullable = false, length = 80)
 	private String filename;
 
 	@Column(name = "DESCRIPTION", nullable = true, length = 100)

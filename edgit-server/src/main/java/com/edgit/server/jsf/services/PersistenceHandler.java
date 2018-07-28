@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,8 +73,9 @@ public class PersistenceHandler {
 	}
 
 	public boolean createEntry(Path path, String filename, GitFile repo, String description) {
-		Path pathToCreate = getReminderPath(path, repo.getFileId());
-		GitFile parent = repo;
+		PathWrapper pathWrapper = getReminderPath(path, repo);
+		Path pathToCreate = pathWrapper == null ? null : pathWrapper.getPath();
+		GitFile parent = pathWrapper == null ? repo : pathWrapper.getParent();
 		if (pathToCreate != null) {
 			Iterator<Path> it = pathToCreate.iterator();
 			while (it.hasNext()) {
@@ -88,24 +90,25 @@ public class PersistenceHandler {
 		return true;
 	}
 
-	private Path getReminderPath(Path path, Long parentId) {
+	private PathWrapper getReminderPath(Path path, GitFile parent) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		GitFileDAO dao = new GitFileDAO(em);
 
 		Iterator<Path> it = path.iterator();
 		try {
-			return getReminderPath(dao, it, parentId);
+			return getReminderPath(dao, it, parent);
 		} finally {
 			em.close();
 		}
 	}
 
-	private Path getReminderPath(GitFileDAO dao, Iterator<Path> iterator, Long parentId) {
+	private PathWrapper getReminderPath(GitFileDAO dao, Iterator<Path> iterator, GitFile parent) {
 		if (iterator.hasNext()) {
 			String dir = iterator.next().toString();
-			GitFile file = dao.findFileByNameAndParentId(dir, parentId);
+			GitFile file = dao.findFileByNameAndParentId(dir, parent.getFileId());
 			if (file != null) {
-				return getReminderPath(dao, iterator, file.getFileId());
+				parent = file; // this is the NEW parent!
+				return getReminderPath(dao, iterator, parent);
 			} else {
 				// create reminder path
 				StringBuilder sb = new StringBuilder();
@@ -115,9 +118,27 @@ public class PersistenceHandler {
 					sb.append(iterator.next());
 					sb.append(File.separator);
 				}
-				return Paths.get(sb.toString());
+				return new PathWrapper(Paths.get(sb.toString()), parent);
 			}
 		}
-		return null; // path already exists!
+		return new PathWrapper(null, parent); // path already exists!
+	}
+
+	private class PathWrapper {
+		private Path path;
+		private GitFile parent;
+
+		public PathWrapper(Path path, GitFile parent) {
+			this.path = path;
+			this.parent = parent;
+		}
+
+		public Path getPath() {
+			return path;
+		}
+
+		public GitFile getParent() {
+			return parent;
+		}
 	}
 }

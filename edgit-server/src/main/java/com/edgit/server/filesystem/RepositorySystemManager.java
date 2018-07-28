@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-import com.edgit.server.filesystem.FileSystemUtils.BooleanResult.BooleanMessage;
+import com.edgit.server.filesystem.RepositorySystemManager.BooleanResult.BooleanMessage;
 
 /**
  * Utilities for manipulating files in the remote repository.
@@ -22,28 +22,9 @@ import com.edgit.server.filesystem.FileSystemUtils.BooleanResult.BooleanMessage;
  * @author Eduardo Amorim
  *
  */
-public class FileSystemUtils {
+public class RepositorySystemManager {
 
 	final static Charset ENCODING = StandardCharsets.UTF_8;
-
-	/**
-	 * Creates a new directory if it does not already exist.
-	 * 
-	 * @param file
-	 *            A directory
-	 * @requires file.isDirectory()
-	 * @return A BooleanResult with several possibilities
-	 */
-	public static BooleanResult makeDirectory(File file) {
-		if (!file.exists()) {
-			if (file.mkdirs()) {
-				return new BooleanResult(BooleanMessage.CREATED);
-			} else {
-				return new BooleanResult(BooleanMessage.NOT_CREATED);
-			}
-		}
-		return new BooleanResult(BooleanMessage.ALREADY_EXISTS);
-	}
 
 	/**
 	 * Place a new file in the appropriate location on the remote server, write
@@ -71,7 +52,7 @@ public class FileSystemUtils {
 
 		int version = 0;
 
-		UpdateFilePathResolver updateFilePathResolver = new FileSystemUtils().new UpdateFilePathResolver(target);
+		UpdateFilePathResolver updateFilePathResolver = new RepositorySystemManager().new UpdateFilePathResolver(target);
 		final Path directory = updateFilePathResolver.getDirectory();
 		final Path indexFile = updateFilePathResolver.getIndexFile();
 
@@ -127,12 +108,31 @@ public class FileSystemUtils {
 		return path.getParent();
 	}
 
-	public static String getPureFilename(Path path) {
+	public static String getFilename(Path path) {
 		return path.getFileName().toString();
 	}
 
+	/**
+	 * Creates a new directory if it does not already exist.
+	 * 
+	 * @param file
+	 *            A directory
+	 * @requires file.isDirectory()
+	 * @return A BooleanResult with several possibilities
+	 */
+	public static BooleanResult makeDirectory(File file) {
+		if (!file.exists()) {
+			if (file.mkdirs()) {
+				return new BooleanResult(BooleanMessage.CREATED);
+			} else {
+				return new BooleanResult(BooleanMessage.NOT_CREATED);
+			}
+		}
+		return new BooleanResult(BooleanMessage.ALREADY_EXISTS);
+	}
+
 	static class BooleanResult {
-		static enum BooleanMessage {
+		public static enum BooleanMessage {
 			ALREADY_EXISTS, CREATED, NOT_CREATED;
 		}
 
@@ -149,12 +149,6 @@ public class FileSystemUtils {
 		public boolean toBoolean() {
 			return BooleanMessage.NOT_CREATED.equals(message) ? false : true;
 		}
-
-		@Override
-		public String toString() {
-			return "BooleanResult [message=" + message.name() + "]";
-		}
-
 	}
 
 	/**
