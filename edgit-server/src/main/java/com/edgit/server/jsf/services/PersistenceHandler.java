@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,10 +71,24 @@ public class PersistenceHandler {
 		return subfiles;
 	}
 
+	/**
+	 * Creates an entry in the GitFile table of the database (if it does not
+	 * already exist)
+	 * 
+	 * @param path
+	 *            The path to this entry
+	 * @param filename
+	 *            The file name if this entry is a file (null otherwise)
+	 * @param repo
+	 *            The root repository of this user
+	 * @param description
+	 *            The description for this entry
+	 * @return
+	 */
 	public boolean createEntry(Path path, String filename, GitFile repo, String description) {
 		PathWrapper pathWrapper = getReminderPath(path, repo);
-		Path pathToCreate = pathWrapper == null ? null : pathWrapper.getPath();
-		GitFile parent = pathWrapper == null ? repo : pathWrapper.getParent();
+		Path pathToCreate = pathWrapper.getPath();
+		GitFile parent = pathWrapper.getParent();
 		if (pathToCreate != null) {
 			Iterator<Path> it = pathToCreate.iterator();
 			while (it.hasNext()) {
@@ -84,12 +97,22 @@ public class PersistenceHandler {
 			}
 		}
 		if (filename != null) {
-			create(parent, filename, description); // lastly, creates the file
-													// entry
+			// lastly, creates the file entry
+			create(parent, filename, description);
 		}
 		return true;
 	}
 
+	/**
+	 * Returns a PathWrapper with the Path of the entry yet to be created and
+	 * the parent to which this path will connect.
+	 * 
+	 * @param path
+	 *            The Path yet to be created
+	 * @param parent
+	 *            The parent where the path will connect
+	 * @return a PathWrapper
+	 */
 	private PathWrapper getReminderPath(Path path, GitFile parent) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		GitFileDAO dao = new GitFileDAO(em);
@@ -102,6 +125,26 @@ public class PersistenceHandler {
 		}
 	}
 
+	/**
+	 * A recursive method that returns a PathWrapper with the path yet to be
+	 * created in the GitFile table of the database, and with the "parent" to
+	 * which this path should connect. <br/>
+	 * For example, we have the path a/b/c/d/e/f. If there are entries in the
+	 * database that correspond to the path a/b/c, the PathWrapper will contain
+	 * the Path d/e/f with c as the parent. If the Path is null, then there is
+	 * no path to be persisted, and the parent will be the equivalent of the
+	 * root repository of this user.
+	 * 
+	 * @param dao
+	 *            The dao responsible of finding a particular entry in the
+	 *            GitFile table
+	 * @param iterator
+	 *            The iterator of the path that advances one step by each
+	 *            iteration
+	 * @param parent
+	 *            The last existing father who was found
+	 * @return a PathWrapper
+	 */
 	private PathWrapper getReminderPath(GitFileDAO dao, Iterator<Path> iterator, GitFile parent) {
 		if (iterator.hasNext()) {
 			String dir = iterator.next().toString();
