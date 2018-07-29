@@ -19,11 +19,11 @@ public class RepositoryServiceImpl implements RepositoryService {
 	}
 
 	public GitFile createRoot(String repositoryName) {
-		return persistenceHandler.create(null, repositoryName, EMPTY_STRING);
+		return persistenceHandler.create(null, repositoryName, EMPTY_STRING, false);
 	}
 
 	public void createRepository(GitFile parent, String repositoryName, String description) {
-		persistenceHandler.create(parent, repositoryName, description);
+		persistenceHandler.create(parent, repositoryName, description, false);
 	}
 
 	public List<GitFile> getSubfiles(String name) {

@@ -33,10 +33,6 @@ public class PersistenceHandler {
 		entityManagerFactory.close();
 	}
 
-	public GitFile create(GitFile parent, String filename, String description) {
-		return create(parent, filename, description, false);
-	}
-
 	public GitFile create(GitFile parent, String filename, String description, boolean isFile) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 
@@ -97,7 +93,7 @@ public class PersistenceHandler {
 			Iterator<Path> it = pathToCreate.iterator();
 			while (it.hasNext()) {
 				String directoryName = it.next().getFileName().toString();
-				parent = create(parent, directoryName, description);
+				parent = create(parent, directoryName, description, false);
 			}
 		}
 		if (filename != null && !entryAlreadyExists(filename, parent.getFileId())) {
@@ -106,7 +102,7 @@ public class PersistenceHandler {
 		}
 		return true;
 	}
-	
+
 	private boolean entryAlreadyExists(String entryName, Long parentId) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		GitFileDAO dao = new GitFileDAO(em);
@@ -114,7 +110,7 @@ public class PersistenceHandler {
 			return dao.findFileByNameAndParentId(entryName, parentId) != null;
 		} finally {
 			em.close();
-		}	
+		}
 	}
 
 	/**
