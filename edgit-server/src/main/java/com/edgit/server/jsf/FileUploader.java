@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -19,8 +19,8 @@ import javax.servlet.http.Part;
 import com.edgit.server.domain.User;
 import com.edgit.server.jsf.handlers.FilePathHandler;
 
-@Stateless
-public class UploadFile {
+@RequestScoped
+public class FileUploader {
 
 	@Inject
 	private UserManager userManager;

@@ -27,7 +27,7 @@ public class HomePage implements Serializable {
 	private RepositoryManager repositoryManager;
 	
 	@Inject
-	private UploadFile uploadFile;
+	private FileUploader fileUploader;
 
 	private List<GitFile> repositories = new ArrayList<>();
 
@@ -55,6 +55,6 @@ public class HomePage implements Serializable {
 	}
 	
 	public String upload() throws ServletException, IOException {
-		return uploadFile.upload(part);
+		return fileUploader.upload(part);
 	}
 }
