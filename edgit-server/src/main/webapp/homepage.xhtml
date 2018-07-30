@@ -27,10 +27,10 @@
 		<br />
 		<h:form enctype="multipart/form-data">
 			<h:outputText>Faça upload de um ficheiro: </h:outputText>
-			<h:inputFile value="#{uploadFile.part}" a:multiple="true"
+			<h:inputFile value="#{homePage.part}" a:multiple="true"
 				a:directory="true" a:webkitdirectory="true" />
 			<br />
-			<h:commandButton value="upload" action="#{uploadFile.upload()}" />
+			<h:commandButton value="upload" action="#{homePage.upload()}" />
 		</h:form>
 	</ui:define>
 </ui:composition>

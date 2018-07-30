@@ -1,4 +1,4 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf;
 
 import java.io.File;
 import java.util.Map;
@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.RepositorySystemManager;
 import com.edgit.server.jpa.GitFile;
-import com.edgit.server.jsf.ServerRepositoryHandler;
+import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {

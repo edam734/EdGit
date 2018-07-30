@@ -1,4 +1,4 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 
 import com.edgit.server.jpa.GitFile;
+import com.edgit.server.jsf.handlers.PersistenceHandler;
 
 @ApplicationScoped
 public class RepositoryServiceImpl implements RepositoryService {

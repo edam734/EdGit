@@ -1,4 +1,4 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf;
 
 import java.io.Serializable;
 import java.util.List;

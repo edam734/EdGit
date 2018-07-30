@@ -1,4 +1,4 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf.handlers;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -1,4 +1,4 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf.handlers;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,20 +8,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
+import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.RepositorySystemManager;
-import com.edgit.server.jsf.ServerRepositoryHandler;
 
 @Stateless
 public class FilePathHandler {
 
-	@Inject
-	private UserManager userManager;
-
-	public File getUserRepository() {
+	public File getUserRepository(User currentUser) {
 		return new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator
-				+ userManager.getCurrentUser().getUsername());
+				+ currentUser.getUsername());
 	}
 
 	public long copyFile(InputStream in, Path target, CopyOption... options) throws IOException {
@@ -29,9 +25,8 @@ public class FilePathHandler {
 		return Files.copy(in, target, options);
 	} 
 
-	public void uploadFile(InputStream in, Path target, CopyOption... options) throws IOException {
-		String currentUser = userManager.getCurrentUser().getUsername();
-		RepositorySystemManager.uploadFile(in, target, "updateIndex (TODO)", currentUser, options);
+	public void uploadFile(User currentUser, InputStream in, Path target, CopyOption... options) throws IOException {
+		RepositorySystemManager.uploadFile(in, target, "updateIndex (TODO)", currentUser.getUsername(), options);
 	}
 	
 	public Path getDirectory(Path path) {

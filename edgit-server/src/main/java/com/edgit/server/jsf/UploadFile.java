@@ -3,28 +3,27 @@ package com.edgit.server.jsf;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import com.edgit.server.jsf.services.FilePathHandler;
-import com.edgit.server.jsf.services.RepositoryManager;
+import com.edgit.server.domain.User;
+import com.edgit.server.jsf.handlers.FilePathHandler;
 
-@Named
-@SessionScoped
-public class UploadFile implements Serializable {
+@Stateless
+public class UploadFile {
 
-	private static final long serialVersionUID = 1L;
+	@Inject
+	private UserManager userManager;
 
 	@EJB
 	private FilePathHandler filepathHandler;
@@ -32,18 +31,12 @@ public class UploadFile implements Serializable {
 	@EJB
 	private RepositoryManager repositoryManager;
 
-	private Part part;
-
-	public Part getPart() {
-		return null;
+	private User getCurrentUser() {
+		return userManager.getCurrentUser();
 	}
 
-	public void setPart(Part part) {
-		this.part = part;
-	}
-
-	public String upload() throws ServletException, IOException {
-		File userRepository = filepathHandler.getUserRepository();
+	public String upload(Part part) throws ServletException, IOException {
+		File userRepository = filepathHandler.getUserRepository(getCurrentUser());
 
 		for (Part p : getAllParts(part)) {
 			String path = p.getSubmittedFileName();
@@ -57,7 +50,7 @@ public class UploadFile implements Serializable {
 
 	private void writeOnDisk(Part p, File file) throws IOException {
 		try (InputStream input = p.getInputStream()) {
-			filepathHandler.uploadFile(input, file.toPath());
+			filepathHandler.uploadFile(getCurrentUser(), input, file.toPath());
 		}
 	}
 

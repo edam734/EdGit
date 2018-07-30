@@ -1,5 +1,6 @@
-package com.edgit.server.jsf.services;
+package com.edgit.server.jsf;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
 
 import com.edgit.server.jpa.GitFile;
 
@@ -22,8 +25,21 @@ public class HomePage implements Serializable {
 
 	@Inject
 	private RepositoryManager repositoryManager;
+	
+	@Inject
+	private UploadFile uploadFile;
 
 	private List<GitFile> repositories = new ArrayList<>();
+
+	private Part part;
+
+	public Part getPart() {
+		return null;
+	}
+
+	public void setPart(Part part) {
+		this.part = part;
+	}
 
 	@PostConstruct
 	private void loadUserRepositories() {
@@ -36,5 +52,9 @@ public class HomePage implements Serializable {
 
 	public void setRepositories(List<GitFile> repositories) {
 		this.repositories = repositories;
+	}
+	
+	public String upload() throws ServletException, IOException {
+		return uploadFile.upload(part);
 	}
 }
