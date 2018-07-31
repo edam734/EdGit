@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.edgit.commons.network.exceptions.IllegalLengthNameException;
-
 public class NetworkFileUtils {
 
-	public static void send(ObjectOutputStream outStream, File file) throws IllegalLengthNameException, IOException {
-		NetworkFile networkFile = new NetworkFile(file);
+	public static void send(ObjectOutputStream outStream, BinamedFile binamedFile) throws IOException {
+		File file = binamedFile.getFile();
+		String filename = binamedFile.getRawPath().toString();
+		NetworkFile networkFile = new NetworkFile(file, filename);
 		// send the file name
 		NetworkFileName networkFilename = networkFile.getFilename();
 		outStream.writeObject(networkFilename);
@@ -24,8 +24,7 @@ public class NetworkFileUtils {
 		}
 	}
 
-	public static void receive(ObjectInputStream inSteam)
-			throws ClassNotFoundException, IOException, IllegalLengthNameException {
+	public static void receive(ObjectInputStream inSteam) throws ClassNotFoundException, IOException {
 		// receive the file name
 		NetworkFileName networkFilename = (NetworkFileName) inSteam.readObject();
 		if (networkFilename == null)

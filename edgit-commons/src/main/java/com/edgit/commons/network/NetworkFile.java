@@ -15,8 +15,8 @@ import com.edgit.commons.network.exceptions.IllegalLengthNameException;
  * NetworkFileName, and return portions of the contents of the file as
  * NetworkFilePart objects.
  * 
- * @author Eduardo
- *
+ * @author Eduardo Amorim
+ * 
  */
 public class NetworkFile implements Serializable {
 
@@ -42,7 +42,26 @@ public class NetworkFile implements Serializable {
 		long fileLengh = this.file.length();
 		this.file = file;
 		this.filename = new NetworkFileName(file.getAbsolutePath());
-		leftToRead = fileLengh;
+		this.leftToRead = fileLengh;
+		this.numberOfParts = new NumberOfParts(fileLengh, NetworkFilePart.PART_SIZE);
+	}
+
+	/**
+	 * Constructor that creates a NetworkFile object, defining what file it
+	 * contains
+	 * 
+	 * @param file
+	 *            The file of this NetworkFile
+	 * @param filename
+	 *            The filename of this NetworkFile
+	 * @throws IllegalLengthNameException
+	 * @requires file != null
+	 */
+	public NetworkFile(File file, String filename) throws IllegalLengthNameException {
+		long fileLengh = this.file.length();
+		this.file = file;
+		this.filename = new NetworkFileName(filename);
+		this.leftToRead = fileLengh;
 		this.numberOfParts = new NumberOfParts(fileLengh, NetworkFilePart.PART_SIZE);
 	}
 

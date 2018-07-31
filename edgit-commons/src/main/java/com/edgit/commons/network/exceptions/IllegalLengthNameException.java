@@ -1,6 +1,8 @@
 package com.edgit.commons.network.exceptions;
 
-public class IllegalLengthNameException extends Exception {
+import java.io.IOException;
+
+public class IllegalLengthNameException extends IOException {
 	private static final long serialVersionUID = 1L;
 
 }
