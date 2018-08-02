@@ -130,8 +130,9 @@ public class EdGitRepositoryManager {
 		List<BinamedFile> binFiles = new ArrayList<>();
 		if (file.isDirectory()) {
 			binFiles = getSubfiles(file);
+		} else {
+			// TODO: para o caso de ser só um ficheiro
 		}
-		// TODO para o caso de ser só um ficheiro
 		return binFiles;
 	}
 
@@ -142,15 +143,13 @@ public class EdGitRepositoryManager {
 
 	private static List<BinamedFile> getSubfiles(File file, List<BinamedFile> subfiles) {
 		if (file.isDirectory()) {
-			if (file.getName().contains(" # ")) {
-				Path dirPath = file.toPath();
-				Path dirName = Paths.get(dirPath.getFileName().toString().split(" # ")[0]);
-				Path indexFile = Paths.get(String.format("%s.index.txt", dirPath.resolve(dirName)));
+			if (file.getName().contains(PathResolver.mark)) {
+				FoldPathResolver foldPathResolver = new EdGitRepositoryManager().new FoldPathResolver(file.toPath());
+				Path indexFile = foldPathResolver.getIndexFile();
 				int version = getMostRecentVersion(indexFile);
 
-				String extension = "." + dirPath.getFileName().toString().split(" # ")[1].toLowerCase();
-				File subfile = new File(String.format("%s-v%d%s", dirPath.resolve(dirName), version, extension));
-				Path unversionedPath = foldpath(subfile.toPath());
+				File subfile = new File(foldPathResolver.getVersionedFilename(version).toString());
+				Path unversionedPath = foldPathResolver.getUnversionedFilename(subfile.toPath());
 				subfiles.add(new BinamedFile(subfile, unversionedPath));
 			} else {
 				for (File subfile : file.listFiles()) {
@@ -204,11 +203,24 @@ public class EdGitRepositoryManager {
 
 	// Path Resolver -----------------------------------------------------------
 
+	interface PathResolver {
+
+		final static String mark = " # ";
+
+		void resolve(Path path);
+
+		Path getDirectory();
+
+		Path getIndexFile();
+
+		Path getVersionedFilename(final int newVersion);
+	}
+
 	/**
 	 * Class that will apply file manipulation rules in the remote repository of
 	 * the client.
 	 * <p>
-	 * For each file you create a new folder that will contain an ".index.txt"
+	 * For each file is created a new folder that will contain an ".index.txt"
 	 * file and the file itself with the version number in the name. E.g., the
 	 * file in the path client "/folder1/.../folderN/filename.pdf" will be
 	 * placed on the server in the following format <br/>
@@ -218,7 +230,7 @@ public class EdGitRepositoryManager {
 	 * @author Eduardo Amorim
 	 *
 	 */
-	class UnfoldPathResolver {
+	class UnfoldPathResolver implements PathResolver {
 
 		private String extension;
 		private String pureFilename;
@@ -233,7 +245,7 @@ public class EdGitRepositoryManager {
 			return indexFile;
 		}
 
-		public Path getVersionedFilename(int newVersion) {
+		public Path getVersionedFilename(final int newVersion) {
 			return filePath(directory, pureFilename, newVersion);
 		}
 
@@ -241,12 +253,12 @@ public class EdGitRepositoryManager {
 			resolve(path);
 		}
 
-		private void resolve(Path path) {
+		public void resolve(Path path) {
 			extension = getExtension(path.getFileName().toString());
 			pureFilename = removeExtension(path.getFileName().toString());
 			Path pathWithoutExtension = Paths.get(removeExtension(path.toString()));
 			directory = directoryPath(pathWithoutExtension,
-					String.format("%s # %s", pureFilename, extension.substring(1).toUpperCase()));
+					String.format("%s" + mark + "%s", pureFilename, extension.substring(1).toUpperCase()));
 			indexFile = indexFilePath(directory, pureFilename);
 		}
 
@@ -273,15 +285,67 @@ public class EdGitRepositoryManager {
 		}
 	}
 
-	private static Path foldpath(Path path) {
-		String compositFilename = path.getFileName().toString();
-		String[] parts = compositFilename.split("-v\\d+");
-		Path filename = Paths.get(parts[0].concat(parts[1]));
-		Path directory = path.getParent();
-		if (directory != null) {
-			directory = directory.getParent();
-			return Paths.get(directory.toString(), parts[0].concat(parts[1]));
+	/**
+	 * Class that will apply file manipulation rules in the remote repository of
+	 * the client.
+	 * <p>
+	 * For a given path, which is a file, gets the name of the index file, and
+	 * gets the file with the corresponding version {@code version} in the name.
+	 * It also gets the unversioned filename.
+	 *
+	 */
+	class FoldPathResolver implements PathResolver {
+
+		private String extension;
+		private Path directory;
+		private Path directoryName;
+		private Path indexFile;
+
+		/**
+		 * @requires !path.isDirectory()
+		 * @param path
+		 */
+		public FoldPathResolver(Path path) {
+			resolve(path);
 		}
-		return filename;
+
+		public void resolve(Path path) {
+			directory = path;
+			extension = "." + directory.getFileName().toString().split(mark)[1].toLowerCase();
+			directoryName = Paths.get(directory.getFileName().toString().split(mark)[0]);
+			indexFile = Paths.get(String.format("%s.index.txt", directory.resolve(directoryName)));
+		}
+
+		public Path getDirectory() {
+			return directory;
+		}
+
+		public Path getIndexFile() {
+			return indexFile;
+		}
+
+		public Path getVersionedFilename(int newVersion) {
+			return Paths.get(String.format("%s-v%d%s", directory.resolve(directoryName), newVersion, extension));
+		}
+
+		/**
+		 * Converts a versioned name to an unversioned name
+		 * 
+		 * @param path
+		 *            The path to convert
+		 * @requires path must be a versioned file name
+		 * @return an unversioned name
+		 */
+		public Path getUnversionedFilename(Path path) {
+			String complete = path.getFileName().toString();
+			String[] parts = complete.split("-v\\d+");
+			Path fname = Paths.get(parts[0].concat(parts[1]));
+			Path dir = path.getParent();
+			if (dir != null) {
+				dir = dir.getParent();
+				return Paths.get(dir.toString(), parts[0].concat(parts[1]));
+			}
+			return fname;
+		}
 	}
 }
