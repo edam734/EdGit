@@ -43,13 +43,12 @@ public class FilePathHandler {
 	}
 
 	public List<BinamedFile> getAllSubfiles(User currentUser, String filename) {
-		List<BinamedFile> initList = EdGitRepositoryManager
+		List<BinamedFile> subfiles = EdGitRepositoryManager
 				.getAllSubfiles(new File(addUserRepositoryOnFilename(currentUser, filename)));
-
-		for (BinamedFile bf : initList) {
+		for (BinamedFile bf : subfiles) {
 			bf.setPath(removeUserRepositoryOfFilename(currentUser, bf.getPath().toString()));
 		}
-		return initList;
+		return subfiles;
 	}
 
 	private String addUserRepositoryOnFilename(User currentUser, String filename) {
