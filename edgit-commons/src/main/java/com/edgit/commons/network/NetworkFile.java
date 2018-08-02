@@ -39,8 +39,8 @@ public class NetworkFile implements Serializable {
 	 * @requires file != null
 	 */
 	public NetworkFile(File file) throws IllegalLengthNameException {
-		long fileLengh = this.file.length();
 		this.file = file;
+		long fileLengh = this.file.length();
 		this.filename = new NetworkFileName(file.getAbsolutePath());
 		this.leftToRead = fileLengh;
 		this.numberOfParts = new NumberOfParts(fileLengh, NetworkFilePart.PART_SIZE);
@@ -58,8 +58,8 @@ public class NetworkFile implements Serializable {
 	 * @requires file != null
 	 */
 	public NetworkFile(File file, String filename) throws IllegalLengthNameException {
-		long fileLengh = this.file.length();
 		this.file = file;
+		long fileLengh = this.file.length();
 		this.filename = new NetworkFileName(filename);
 		this.leftToRead = fileLengh;
 		this.numberOfParts = new NumberOfParts(fileLengh, NetworkFilePart.PART_SIZE);

@@ -50,6 +50,3 @@ public class UserManager implements Serializable {
 		return "homepage"; // Home Page
 	}
 }
-
-
-

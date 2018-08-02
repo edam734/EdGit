@@ -9,7 +9,7 @@ public class NetworkFileUtils {
 
 	public static void send(ObjectOutputStream outStream, BinamedFile binamedFile) throws IOException {
 		File file = binamedFile.getFile();
-		String filename = binamedFile.getRawPath().toString();
+		String filename = binamedFile.getPath().toString();
 		NetworkFile networkFile = new NetworkFile(file, filename);
 		// send the file name
 		NetworkFileName networkFilename = networkFile.getFilename();

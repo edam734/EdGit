@@ -12,9 +12,12 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import com.edgit.server.filesystem.RepositorySystemManager.BooleanResult.BooleanMessage;
+import com.edgit.commons.network.BinamedFile;
+import com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage;
 
 /**
  * Utilities for manipulating files in the remote repository.
@@ -22,7 +25,7 @@ import com.edgit.server.filesystem.RepositorySystemManager.BooleanResult.Boolean
  * @author Eduardo Amorim
  *
  */
-public class RepositorySystemManager {
+public class EdGitRepositoryManager {
 
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 
@@ -45,16 +48,15 @@ public class RepositorySystemManager {
 	 */
 	public static boolean uploadFile(final InputStream in, Path target, final String updateIndex, final String username,
 			CopyOption... options) throws IOException {
-
 		if (target.toFile().isDirectory()) {
 			return makeDirectory(target.toFile()).toBoolean();
 		}
 
 		int version = 0;
 
-		UpdateFilePathResolver updateFilePathResolver = new RepositorySystemManager().new UpdateFilePathResolver(target);
-		final Path directory = updateFilePathResolver.getDirectory();
-		final Path indexFile = updateFilePathResolver.getIndexFile();
+		UnfoldPathResolver unfoldPathResolver = new EdGitRepositoryManager().new UnfoldPathResolver(target);
+		final Path directory = unfoldPathResolver.getDirectory();
+		final Path indexFile = unfoldPathResolver.getIndexFile();
 
 		BooleanResult b = makeDirectory(directory.toFile());
 		if (b.getMessage().equals(BooleanMessage.NOT_CREATED)) {
@@ -64,19 +66,19 @@ public class RepositorySystemManager {
 		}
 
 		int newVersion = ++version;
-		writeAnEntry(indexFile.toFile(), Integer.toString(newVersion), " : ", username);
+		writeAnIndexEntry(indexFile.toFile(), Integer.toString(newVersion), " : ", username);
 
-		target = updateFilePathResolver.getVersionedFilename(newVersion);
+		target = unfoldPathResolver.getVersionedFilename(newVersion);
 
-		return createNewVersion(in, target, options);
+		return createFileNewVersion(in, target, options);
 	}
 
-	private static boolean createNewVersion(final InputStream in, final Path target, CopyOption... options)
+	private static boolean createFileNewVersion(final InputStream in, final Path target, CopyOption... options)
 			throws IOException {
 		return (Files.copy(in, target, options) > 0);
 	}
 
-	private static void writeAnEntry(File file, String... strings) {
+	private static void writeAnIndexEntry(File file, String... strings) {
 		try (FileWriter fw = new FileWriter(file.getAbsolutePath(), true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter out = new PrintWriter(bw)) {
@@ -113,6 +115,54 @@ public class RepositorySystemManager {
 	}
 
 	/**
+	 * Returns all subfiles of this {@code file} with the name adapted to go to
+	 * the user.
+	 * <p>
+	 * After this method is called, it's necessary to treat the name that goes
+	 * within BinamedFile, removing the part that corresponds to the name of the
+	 * user's repository.
+	 * 
+	 * @param file
+	 *            The file to search
+	 * @return All subfiles of this {@code file}
+	 */
+	public static List<BinamedFile> getAllSubfiles(File file) {
+		List<BinamedFile> binFiles = new ArrayList<>();
+		if (file.isDirectory()) {
+			binFiles = getSubfiles(file);
+		}
+		// TODO para o caso de ser só um ficheiro
+		return binFiles;
+	}
+
+	private static List<BinamedFile> getSubfiles(File file) {
+		List<BinamedFile> subfiles = new ArrayList<>();
+		return getSubfiles(file, subfiles);
+	}
+
+	private static List<BinamedFile> getSubfiles(File file, List<BinamedFile> subfiles) {
+		if (file.isDirectory()) {
+			if (file.getName().contains(" # ")) {
+				Path dirPath = file.toPath();
+				Path dirName = Paths.get(dirPath.getFileName().toString().split(" # ")[0]);
+				Path indexFile = Paths.get(String.format("%s.index.txt", dirPath.resolve(dirName)));
+				int version = getMostRecentVersion(indexFile);
+
+				String extension = "." + dirPath.getFileName().toString().split(" # ")[1].toLowerCase();
+				File subfile = new File(String.format("%s-v%d%s", dirPath.resolve(dirName), version, extension));
+				Path unversionedPath = foldpath(subfile.toPath());
+				subfiles.add(new BinamedFile(subfile, unversionedPath));
+			} else {
+				for (File subfile : file.listFiles()) {
+					getSubfiles(subfile, subfiles);
+				}
+				return subfiles;
+			}
+		}
+		return subfiles;
+	}
+
+	/**
 	 * Creates a new directory if it does not already exist.
 	 * 
 	 * @param file
@@ -121,14 +171,15 @@ public class RepositorySystemManager {
 	 * @return A BooleanResult with several possibilities
 	 */
 	public static BooleanResult makeDirectory(File file) {
-		if (!file.exists()) {
+		if (file.exists()) {
+			return new BooleanResult(BooleanMessage.ALREADY_EXISTS);
+		} else {
 			if (file.mkdirs()) {
 				return new BooleanResult(BooleanMessage.CREATED);
 			} else {
 				return new BooleanResult(BooleanMessage.NOT_CREATED);
 			}
 		}
-		return new BooleanResult(BooleanMessage.ALREADY_EXISTS);
 	}
 
 	static class BooleanResult {
@@ -151,6 +202,8 @@ public class RepositorySystemManager {
 		}
 	}
 
+	// Path Resolver -----------------------------------------------------------
+
 	/**
 	 * Class that will apply file manipulation rules in the remote repository of
 	 * the client.
@@ -165,16 +218,12 @@ public class RepositorySystemManager {
 	 * @author Eduardo Amorim
 	 *
 	 */
-	class UpdateFilePathResolver {
+	class UnfoldPathResolver {
 
 		private String extension;
 		private String pureFilename;
 		private Path directory;
 		private Path indexFile;
-
-		public UpdateFilePathResolver(final Path path) {
-			resolve(path);
-		}
 
 		public Path getDirectory() {
 			return directory;
@@ -188,12 +237,16 @@ public class RepositorySystemManager {
 			return filePath(directory, pureFilename, newVersion);
 		}
 
-		private void resolve(final Path path) {
+		public UnfoldPathResolver(Path path) {
+			resolve(path);
+		}
+
+		private void resolve(Path path) {
 			extension = getExtension(path.getFileName().toString());
 			pureFilename = removeExtension(path.getFileName().toString());
 			Path pathWithoutExtension = Paths.get(removeExtension(path.toString()));
 			directory = directoryPath(pathWithoutExtension,
-					pureFilename + " - " + extension.substring(1).toUpperCase());
+					String.format("%s # %s", pureFilename, extension.substring(1).toUpperCase()));
 			indexFile = indexFilePath(directory, pureFilename);
 		}
 
@@ -218,5 +271,17 @@ public class RepositorySystemManager {
 		private Path filePath(final Path path, String name, int version) {
 			return Paths.get(path.toString(), name + "-v" + version + extension);
 		}
+	}
+
+	private static Path foldpath(Path path) {
+		String compositFilename = path.getFileName().toString();
+		String[] parts = compositFilename.split("-v\\d+");
+		Path filename = Paths.get(parts[0].concat(parts[1]));
+		Path directory = path.getParent();
+		if (directory != null) {
+			directory = directory.getParent();
+			return Paths.get(directory.toString(), parts[0].concat(parts[1]));
+		}
+		return filename;
 	}
 }

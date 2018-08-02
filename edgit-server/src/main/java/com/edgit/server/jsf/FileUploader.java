@@ -45,12 +45,12 @@ public class FileUploader {
 			writeOnDisk(p, file);
 			persist(path);
 		}
-		return "";
+		return "homepage?faces-redirect=true";
 	}
 
 	private void writeOnDisk(Part p, File file) throws IOException {
 		try (InputStream input = p.getInputStream()) {
-			filepathHandler.uploadFile(getCurrentUser(), input, file.toPath());
+			filepathHandler.push(getCurrentUser(), input, file.toPath());
 		}
 	}
 

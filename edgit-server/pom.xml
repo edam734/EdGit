@@ -5,10 +5,10 @@
 		<groupId>com.edgit</groupId>
 		<artifactId>EdGit</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-<!-- 		<relativePath>../EdGit</relativePath> -->
+		<!-- <relativePath>../EdGit</relativePath> -->
 	</parent>
-	<artifactId>edgit-server</artifactId> 
-	<packaging>war</packaging>
+	<artifactId>edgit-server</artifactId>
+	<packaging>war</packaging> 
 
 	<dependencies>
 		<dependency>
@@ -29,11 +29,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.9</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.edgit</groupId>
 			<artifactId>edgit-commons</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -46,7 +46,8 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-				</configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>  
 			</plugin>
 		</plugins>
 	</build>

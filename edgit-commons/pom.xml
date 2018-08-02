@@ -5,7 +5,8 @@
 		<groupId>com.edgit</groupId>
 		<artifactId>EdGit</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../EdGit</relativePath>
+		<!-- <relativePath>../EdGit</relativePath> -->
 	</parent>
 	<artifactId>edgit-commons</artifactId>
+	<packaging>jar</packaging>
 </project>

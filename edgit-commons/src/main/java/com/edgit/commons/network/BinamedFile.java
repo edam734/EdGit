@@ -2,37 +2,32 @@ package com.edgit.commons.network;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class BinamedFile {
 
 	private File file;
-	private Path rawPath;
-	private Path versionedPath;
+	private Path path;
 
 	public BinamedFile(File file, Path pathToFile) {
 		this.file = file;
-		this.rawPath = null;
-		this.versionedPath = Paths.get(pathToFile.toString(), file.getName());
+		this.path = pathToFile;
 	}
 
 	public File getFile() {
 		return file;
 	}
 
-	public void setFile(File file) {
-		this.file = file;
+	public Path getPath() {
+		return path;
 	}
 
-	public Path getRawPath() {
-		return rawPath;
+	public void setPath(Path path) {
+		this.path = path;
 	}
 
-	public void setRawPath(Path rawPath) {
-		this.rawPath = rawPath;
+	@Override
+	public String toString() {
+		return "BinamedFile [file=" + file + ", path=" + path + "]";
 	}
 
-	public Path getVersionedPath() {
-		return versionedPath;
-	}
 }

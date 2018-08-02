@@ -19,6 +19,9 @@
 						<ui:decorate template="/project-summary.xhtml">
 							<ui:param name="repository" value="#{repository}" />
 						</ui:decorate>
+						<h:commandButton value="Download" action="#{homePage.download()}">
+							<f:param name="repositoryName" value="#{repository.filename}" />
+						</h:commandButton>
 					</ui:repeat>
 				</h:form>
 			</section>

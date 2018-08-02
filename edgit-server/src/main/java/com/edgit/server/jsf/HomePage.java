@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,9 +27,12 @@ public class HomePage implements Serializable {
 
 	@Inject
 	private RepositoryManager repositoryManager;
-	
+
 	@Inject
 	private FileUploader fileUploader;
+
+	@Inject
+	private FileDownloader fileDownloader;
 
 	private List<GitFile> repositories = new ArrayList<>();
 
@@ -53,8 +58,15 @@ public class HomePage implements Serializable {
 	public void setRepositories(List<GitFile> repositories) {
 		this.repositories = repositories;
 	}
-	
+
 	public String upload() throws ServletException, IOException {
 		return fileUploader.upload(part);
+	}
+
+	public String download() {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+		String filename = params.get("repositoryName");
+		return fileDownloader.download(filename);
 	}
 }
