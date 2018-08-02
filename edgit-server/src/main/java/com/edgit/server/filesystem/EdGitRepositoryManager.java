@@ -143,7 +143,7 @@ public class EdGitRepositoryManager {
 
 	private static List<BinamedFile> getSubfiles(File file, List<BinamedFile> subfiles) {
 		if (file.isDirectory()) {
-			if (file.getName().contains(PathResolver.mark)) {
+			if (file.getName().contains(PathResolver.MARK)) {
 				FoldPathResolver foldPathResolver = new EdGitRepositoryManager().new FoldPathResolver(file.toPath());
 				Path indexFile = foldPathResolver.getIndexFile();
 				int version = getMostRecentVersion(indexFile);
@@ -205,7 +205,7 @@ public class EdGitRepositoryManager {
 
 	interface PathResolver {
 
-		final static String mark = " # ";
+		final static String MARK = " # ";
 
 		void resolve(Path path);
 
@@ -258,7 +258,7 @@ public class EdGitRepositoryManager {
 			pureFilename = removeExtension(path.getFileName().toString());
 			Path pathWithoutExtension = Paths.get(removeExtension(path.toString()));
 			directory = directoryPath(pathWithoutExtension,
-					String.format("%s" + mark + "%s", pureFilename, extension.substring(1).toUpperCase()));
+					String.format("%s" + MARK + "%s", pureFilename, extension.substring(1).toUpperCase()));
 			indexFile = indexFilePath(directory, pureFilename);
 		}
 
@@ -311,8 +311,8 @@ public class EdGitRepositoryManager {
 
 		public void resolve(Path path) {
 			directory = path;
-			extension = "." + directory.getFileName().toString().split(mark)[1].toLowerCase();
-			directoryName = Paths.get(directory.getFileName().toString().split(mark)[0]);
+			extension = "." + directory.getFileName().toString().split(MARK)[1].toLowerCase();
+			directoryName = Paths.get(directory.getFileName().toString().split(MARK)[0]);
 			indexFile = Paths.get(String.format("%s.index.txt", directory.resolve(directoryName)));
 		}
 
