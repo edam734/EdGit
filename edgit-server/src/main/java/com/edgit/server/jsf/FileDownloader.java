@@ -1,8 +1,10 @@
 package com.edgit.server.jsf;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -20,10 +22,10 @@ public class FileDownloader {
 
 	@Inject
 	private UserManager userManager;
-	
+
 	@Inject
 	private FilePathHandler filepathHandler;
-	
+
 	private User getCurrentUser() {
 		return userManager.getCurrentUser();
 	}
@@ -33,24 +35,25 @@ public class FileDownloader {
 		ExternalContext externalContext = facesContext.getExternalContext();
 
 		List<BinamedFile> subfiles = filepathHandler.getAllSubfiles(getCurrentUser(), name);
-		String filename = subfiles.get(0).getPath().toString();
 
 		// To clean headers in the buffer beforehand
 		externalContext.responseReset();
 
 		// Prepare the response and set the necessary headers
-		externalContext.setResponseContentType(getMimeType(facesContext, filename));
-		externalContext.setResponseHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+		externalContext.setResponseContentType("Content-type: text/zip");
+		externalContext.setResponseHeader("Content-Disposition", "attachment; filename=download.zip");
 
-		try (OutputStream os = externalContext.getResponseOutputStream()) {
+		try (OutputStream os = externalContext.getResponseOutputStream();
+				ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));) {
+
 			for (BinamedFile binamedFile : subfiles) {
-				filepathHandler.pull(os, binamedFile);
+				filepathHandler.pull(zos, binamedFile);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		facesContext.responseComplete();
-		
+
 		return "";
 	}
 

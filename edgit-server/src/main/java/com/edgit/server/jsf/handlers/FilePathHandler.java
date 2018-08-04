@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 import javax.ejb.Stateless;
 
@@ -31,7 +32,7 @@ public class FilePathHandler {
 	}
 
 	public void push(User currentUser, InputStream in, Path target, CopyOption... options) throws IOException {
-		EdGitRepositoryManager.uploadFile(in, target, "updateIndex (TODO)", currentUser.getUsername(), options);
+		EdGitRepositoryManager.receiveFile(in, target, "updateIndex (TODO)", currentUser.getUsername(), options);
 	}
 
 	public Path getDirectory(Path path) {
@@ -60,8 +61,7 @@ public class FilePathHandler {
 		return Paths.get(complete.substring(strLength));
 	}
 
-	public void pull(OutputStream os, BinamedFile binamedFile) throws IOException {
-		ObjectOutputStream oos = new ObjectOutputStream(os);
-		NetworkFileUtils.send(oos, binamedFile);
+	public void pull(ZipOutputStream zos, BinamedFile binamedFile) throws IOException {
+		EdGitRepositoryManager.sendFile(zos, binamedFile);
 	}
 }

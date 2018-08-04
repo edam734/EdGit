@@ -1,7 +1,10 @@
 package com.edgit.server.filesystem;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +18,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.edgit.commons.network.BinamedFile;
 import com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage;
@@ -46,8 +51,8 @@ public class EdGitRepositoryManager {
 	 * @return true if was successful
 	 * @throws IOException
 	 */
-	public static boolean uploadFile(final InputStream in, Path target, final String updateIndex, final String username,
-			CopyOption... options) throws IOException {
+	public static boolean receiveFile(final InputStream in, Path target, final String updateIndex,
+			final String username, CopyOption... options) throws IOException {
 		if (target.toFile().isDirectory()) {
 			return makeDirectory(target.toFile()).toBoolean();
 		}
@@ -112,6 +117,37 @@ public class EdGitRepositoryManager {
 
 	public static String getFilename(Path path) {
 		return path.getFileName().toString();
+	}
+
+	/**
+	 * Write a file in a zip with the appropriate name that is already contained
+	 * in the field "path" of the method's argument binamedFile
+	 * 
+	 * @param binamedFile
+	 *            An object containing the file and the file's name
+	 * @param zos
+	 *            A zip to this file
+	 * @throws IOException
+	 */
+	public static void sendFile(ZipOutputStream zos, BinamedFile binamedFile) throws IOException {
+
+		File file = binamedFile.getFile();
+		String filename = binamedFile.getPath().toString();
+
+		zos.putNextEntry(new ZipEntry(filename));
+
+		try (FileInputStream fis = new FileInputStream(file); BufferedInputStream fif = new BufferedInputStream(fis);) {
+			// Write the contents of the file
+			int data = 0;
+			while ((data = fif.read()) != -1) {
+				zos.write(data);
+			}
+		} catch (FileNotFoundException fnfe) {
+			// If the file does not exists, write an error entry instead of file
+			// contents
+			zos.write(("ERROR: Could not find file " + filename).getBytes());
+		}
+		zos.closeEntry();
 	}
 
 	/**
