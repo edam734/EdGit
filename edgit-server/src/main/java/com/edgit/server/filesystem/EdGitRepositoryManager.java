@@ -22,7 +22,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.edgit.commons.network.BinamedFile;
-import com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage;
+import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.ALREADY_EXISTS;
+import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.CREATED;
+import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.NOT_CREATED;
 
 /**
  * Utilities for manipulating files in the remote repository.
@@ -64,9 +66,9 @@ public class EdGitRepositoryManager {
 		final Path indexFile = unfoldPathResolver.getIndexFile();
 
 		BooleanResult b = makeDirectory(directory.toFile());
-		if (b.getMessage().equals(BooleanMessage.NOT_CREATED)) {
+		if (b.getMessage().equals(NOT_CREATED)) {
 			return false;
-		} else if (b.getMessage().equals(BooleanMessage.ALREADY_EXISTS)) {
+		} else if (b.getMessage().equals(ALREADY_EXISTS)) {
 			version = getMostRecentVersion(indexFile);
 		}
 
@@ -207,12 +209,12 @@ public class EdGitRepositoryManager {
 	 */
 	public static BooleanResult makeDirectory(File file) {
 		if (file.exists()) {
-			return new BooleanResult(BooleanMessage.ALREADY_EXISTS);
+			return new BooleanResult(ALREADY_EXISTS);
 		} else {
 			if (file.mkdirs()) {
-				return new BooleanResult(BooleanMessage.CREATED);
+				return new BooleanResult(CREATED);
 			} else {
-				return new BooleanResult(BooleanMessage.NOT_CREATED);
+				return new BooleanResult(NOT_CREATED);
 			}
 		}
 	}
@@ -233,7 +235,7 @@ public class EdGitRepositoryManager {
 		}
 
 		public boolean toBoolean() {
-			return BooleanMessage.NOT_CREATED.equals(message) ? false : true;
+			return NOT_CREATED.equals(message) ? false : true;
 		}
 	}
 

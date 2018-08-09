@@ -5,9 +5,12 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.NamingException;
 
 import com.edgit.server.domain.User;
 
+@Named
 @SessionScoped
 public class UserManager implements Serializable {
 
@@ -19,12 +22,15 @@ public class UserManager implements Serializable {
 	private UserServiceImpl userService;
 
 	public String signIn(String username, String password) {
-		User user = userService.getUser(username);
-		if (user == null || !password.equals(user.getPassword())) {
-			return ""; // stay in the same page
+		if (userService.authenticate(username, password)) {			
+			User user = userService.getUser(username);
+			if (user == null || !password.equals(user.getPassword())) {
+				return ""; // stay in the same page
+			}
+			currentUser = user;
+			return "homepage"; // go to home page
 		}
-		currentUser = user;
-		return "homepage"; // go to home page
+		return "";
 	}
 
 	public boolean isSignedIn() {
@@ -45,8 +51,13 @@ public class UserManager implements Serializable {
 	}
 
 	public String saveUser(User user) {
-		userService.saveUser(user);
-		currentUser = user;
-		return "homepage"; // Home Page
+		try {
+			userService.saveUser(user);
+			currentUser = user;
+			return "homepage"; // Home Page
+		} catch (NamingException e) {
+			// couldn't save user...
+		}
+		return "";
 	}
 }

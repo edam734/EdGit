@@ -1,7 +1,5 @@
 package com.edgit.server.jsf;
 
-import java.io.File;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

@@ -4,13 +4,17 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 
 import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.EdGitRepositoryManager;
 import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
+import com.edgit.server.security.authentication.Ldap;
+import com.edgit.server.security.authentication.LdapPartitionManager;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -20,13 +24,24 @@ public class UserServiceImpl implements UserService {
 
 	private Map<String, User> users = new ConcurrentHashMap<>();
 
+	private Ldap ldap;
+
+	@PostConstruct
+	private void init() {
+		ldap = new Ldap();
+	}
+
 	@Override
 	public User getUser(String username) {
 		return users.get(username);
 	}
 
+	public boolean authenticate(String username, String password) {
+		return ldap.authenticate(username, password);
+	}
+
 	@Override
-	public void saveUser(User user) {
+	public void saveUser(User user) throws NamingException {
 		// Creates the root folder that will serve to contain all the projects
 		// of this user.
 		GitFile root = repositoryService.createRoot(user.getUsername());
@@ -38,5 +53,8 @@ public class UserServiceImpl implements UserService {
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
 		// Saves user in DB
 		users.put(user.getUsername(), user);
+
+		LdapPartitionManager partitionManager = ldap.getPartitionManager();
+		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName());
 	}
-}
+} 
