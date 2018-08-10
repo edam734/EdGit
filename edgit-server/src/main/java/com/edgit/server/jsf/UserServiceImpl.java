@@ -1,8 +1,6 @@
 package com.edgit.server.jsf;
 
 import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -13,8 +11,8 @@ import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.EdGitRepositoryManager;
 import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
-import com.edgit.server.security.authentication.Ldap;
 import com.edgit.server.security.authentication.LdapPartitionManager;
+import com.edgit.server.security.authentication.LdapServer;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -22,21 +20,21 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private RepositoryServiceImpl repositoryService;
 
-	private Map<String, User> users = new ConcurrentHashMap<>();
+//	private Map<String, User> users = new ConcurrentHashMap<>();
 
-	private Ldap ldap;
+	private LdapServer ldap;
 
 	@PostConstruct
 	private void init() {
-		ldap = new Ldap();
+		ldap = new LdapServer();
 	}
 
-	@Override
-	public User getUser(String username) {
-		return users.get(username);
-	}
+//	@Override
+//	public User getUser(String username) {
+//		return users.get(username);
+//	}
 
-	public boolean authenticate(String username, String password) {
+	public User authenticate(String username, String password) {
 		return ldap.authenticate(username, password);
 	}
 
@@ -52,9 +50,10 @@ public class UserServiceImpl implements UserService {
 		EdGitRepositoryManager.makeDirectory(
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
 		// Saves user in DB
-		users.put(user.getUsername(), user);
+//		users.put(user.getUsername(), user);
 
 		LdapPartitionManager partitionManager = ldap.getPartitionManager();
-		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName());
+		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+				user.getEmailAddress());
 	}
-} 
+}

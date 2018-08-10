@@ -15,7 +15,8 @@ public class LdapPartitionManager {
 		this.context = context;
 	}
 
-	public void crateEntry(String username, String password, String commonName, String surname) throws NamingException {
+	public void crateEntry(String username, String password, String commonName, String surname, String emailAddress)
+			throws NamingException {
 
 		Attributes attributes = new BasicAttributes();
 
@@ -39,8 +40,10 @@ public class LdapPartitionManager {
 		sn.add(surname);
 		attributes.put(sn);
 
-		// context.createSubcontext(SUBCONTEXT.concat(String.valueOf(ServerRepositoryHandler.numberOfUsers)),
-		// attributes);
-		context.createSubcontext("uid=" + username + "," + Ldap.PARTITION_SUFIX, attributes);
+		// Attribute email = new BasicAttribute("emailAddress");
+		// sn.add(emailAddress);
+		// attributes.put(email);
+
+		context.createSubcontext("uid=" + username + "," + LdapServer.USERS, attributes);
 	}
 }

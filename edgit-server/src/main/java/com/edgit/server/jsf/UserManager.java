@@ -22,15 +22,14 @@ public class UserManager implements Serializable {
 	private UserServiceImpl userService;
 
 	public String signIn(String username, String password) {
-		if (userService.authenticate(username, password)) {			
-			User user = userService.getUser(username);
-			if (user == null || !password.equals(user.getPassword())) {
-				return ""; // stay in the same page
-			}
+		User user = null;
+		if ((user = userService.authenticate(username, password)) != null) {
 			currentUser = user;
 			return "homepage"; // go to home page
+			
+		} else {
+			return ""; // stay in the same page
 		}
-		return "";
 	}
 
 	public boolean isSignedIn() {
@@ -57,6 +56,7 @@ public class UserManager implements Serializable {
 			return "homepage"; // Home Page
 		} catch (NamingException e) {
 			// couldn't save user...
+			e.printStackTrace();
 		}
 		return "";
 	}
