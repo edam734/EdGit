@@ -50,10 +50,8 @@ public class LdapServer {
 			properties.put(Context.SECURITY_PRINCIPAL, "uid=admin,ou=system");
 			properties.put(Context.SECURITY_CREDENTIALS, "secret");
 
-			// Bind anonymously
 			return new InitialDirContext(properties);
 		}
-
 		return context;
 	}
 
