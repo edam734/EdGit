@@ -62,7 +62,7 @@ public class LdapServer {
 			// throws NamingException if not verified
 			verifyPassword(context, dn, password);
 
-			User user = retreiveUser(context, dn, "");
+			User user = retrieveUser(context, dn, "");
 			return user;
 
 		} catch (NamingException e) {
@@ -121,7 +121,7 @@ public class LdapServer {
 		new InitialDirContext(environment).close();
 	}
 
-	private User retreiveUser(DirContext cxt, String dn, String subcontext) throws NamingException {
+	private User retrieveUser(DirContext cxt, String dn, String subcontext) throws NamingException {
 		User user = new User();
 
 		// Perform a lookup of the object itself using JNDI
