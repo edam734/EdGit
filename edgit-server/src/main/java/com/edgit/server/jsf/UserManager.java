@@ -21,9 +21,9 @@ public class UserManager implements Serializable {
 	@Inject
 	private UserServiceImpl userService;
 
-	public String signIn(String username, String password) {
+	public String signIn(String username, String email, String password) {
 		User user = null;
-		if ((user = userService.authenticate(username, password)) != null) {
+		if ((user = userService.authenticate(username, email, password)) != null) {
 			currentUser = user;
 			return "homepage"; // go to home page
 			

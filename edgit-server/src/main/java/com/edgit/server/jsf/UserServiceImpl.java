@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private RepositoryServiceImpl repositoryService;
 
-//	private Map<String, User> users = new ConcurrentHashMap<>();
+	// private Map<String, User> users = new ConcurrentHashMap<>();
 
 	private LdapServer ldap;
 
@@ -29,17 +29,22 @@ public class UserServiceImpl implements UserService {
 		ldap = new LdapServer();
 	}
 
-//	@Override
-//	public User getUser(String username) {
-//		return users.get(username);
-//	}
+	// @Override
+	// public User getUser(String username) {
+	// return users.get(username);
+	// }
 
-	public User authenticate(String username, String password) {
-		return ldap.authenticate(username, password);
+	public User authenticate(String username, String email, String password) {
+		return ldap.authenticate(username, email, password);
 	}
 
 	@Override
 	public void saveUser(User user) throws NamingException {
+		// save user
+		LdapPartitionManager partitionManager = ldap.getPartitionManager();
+		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+				user.getEmailAddress());
+
 		// Creates the root folder that will serve to contain all the projects
 		// of this user.
 		GitFile root = repositoryService.createRoot(user.getUsername());
@@ -52,8 +57,5 @@ public class UserServiceImpl implements UserService {
 		// Saves user in DB
 //		users.put(user.getUsername(), user);
 
-		LdapPartitionManager partitionManager = ldap.getPartitionManager();
-		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
-				user.getEmailAddress());
 	}
 }

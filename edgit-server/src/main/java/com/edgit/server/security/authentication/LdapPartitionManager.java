@@ -40,9 +40,9 @@ public class LdapPartitionManager {
 		sn.add(surname);
 		attributes.put(sn);
 
-		// Attribute email = new BasicAttribute("emailAddress");
-		// sn.add(emailAddress);
-		// attributes.put(email);
+		Attribute email = new BasicAttribute("mail");
+		email.add(emailAddress);
+		attributes.put(email);
 
 		context.createSubcontext("uid=" + username + "," + LdapServer.USERS, attributes);
 	}

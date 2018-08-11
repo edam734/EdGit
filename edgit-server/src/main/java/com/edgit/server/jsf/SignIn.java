@@ -10,7 +10,7 @@ public class SignIn {
 
 	private String username;
 	private String password;
-	
+
 	@Inject
 	private UserManager userManager;
 
@@ -31,6 +31,6 @@ public class SignIn {
 	}
 
 	public String submit() {
-		return userManager.signIn(getUsername(), getPassword());
+		return userManager.signIn(getUsername(), getUsername(), getPassword());
 	}
 }

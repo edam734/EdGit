@@ -55,9 +55,9 @@ public class LdapServer {
 		return context;
 	}
 
-	public User authenticate(String uid, String password) {
+	public User authenticate(String uid, String email, String password) {
 		try {
-			String dn = findDistinctNameOfAccount(context, USERS, uid);
+			String dn = findDistinctNameOfAccount(context, USERS, uid, email);
 
 			// throws NamingException if not verified
 			verifyPassword(context, dn, password);
@@ -70,15 +70,16 @@ public class LdapServer {
 		}
 	}
 
-	private String findDistinctNameOfAccount(DirContext ctx, String ldapSearchBase, String uid) throws NamingException {
-		String filter = "(&(objectClass=inetOrgPerson)(uid={0}))";
+	private String findDistinctNameOfAccount(DirContext ctx, String ldapSearchBase, String uid, String email)
+			throws NamingException {
+		String filter = "(&(objectClass=inetOrgPerson)(|(uid={0})(mail={1})))";
 
 		SearchControls controls = new SearchControls();
 		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 		controls.setReturningAttributes(new String[0]);
 		controls.setReturningObjFlag(true);
 
-		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { uid }, controls);
+		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { uid, email }, controls);
 		String dn = null;
 
 		if (enm.hasMore()) {
@@ -95,6 +96,22 @@ public class LdapServer {
 		return dn;
 	}
 
+	/**
+	 * A cloning of the context environment is done so the original environment
+	 * it's not modified.
+	 * <p>
+	 * Try to initialize the cloned context environment. If the user credentials
+	 * are different from the originals, it throws an exception.
+	 * 
+	 * @param ctx
+	 *            The original context
+	 * @param dn
+	 *            The distinct name to user
+	 * @param password
+	 *            The password to be checked
+	 * @throws NamingException
+	 *             if a naming exception is encountered
+	 */
 	private void verifyPassword(DirContext ctx, String dn, String password) throws NamingException {
 		// Bind with a DN and given password
 		@SuppressWarnings("unchecked")
