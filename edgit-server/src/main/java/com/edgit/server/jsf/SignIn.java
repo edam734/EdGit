@@ -8,18 +8,18 @@ import javax.inject.Named;
 @RequestScoped
 public class SignIn {
 
-	private String username;
+	private String identification;
 	private String password;
 
 	@Inject
 	private UserManager userManager;
 
-	public String getUsername() {
-		return username;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setIdentification(String identification) {
+		this.identification = identification;
 	}
 
 	public String getPassword() {
@@ -31,6 +31,6 @@ public class SignIn {
 	}
 
 	public String submit() {
-		return userManager.signIn(getUsername(), getUsername(), getPassword());
+		return userManager.signIn(getIdentification(), getPassword());
 	}
 }

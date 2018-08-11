@@ -55,9 +55,9 @@ public class LdapServer {
 		return context;
 	}
 
-	public User authenticate(String uid, String email, String password) {
+	public User authenticate(String identification, String password) {
 		try {
-			String dn = findDistinctNameOfAccount(context, USERS, uid, email);
+			String dn = findDistinctNameOfAccount(context, USERS, identification);
 
 			// throws NamingException if not verified
 			verifyPassword(context, dn, password);
@@ -70,16 +70,16 @@ public class LdapServer {
 		}
 	}
 
-	private String findDistinctNameOfAccount(DirContext ctx, String ldapSearchBase, String uid, String email)
+	private String findDistinctNameOfAccount(DirContext ctx, String ldapSearchBase, String identification)
 			throws NamingException {
-		String filter = "(&(objectClass=inetOrgPerson)(|(uid={0})(mail={1})))";
+		String filter = "(&(objectClass=inetOrgPerson)(|(uid={0})(mail={0})))";
 
 		SearchControls controls = new SearchControls();
 		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 		controls.setReturningAttributes(new String[0]);
 		controls.setReturningObjFlag(true);
 
-		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { uid, email }, controls);
+		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { identification }, controls);
 		String dn = null;
 
 		if (enm.hasMore()) {

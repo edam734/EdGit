@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
 	// return users.get(username);
 	// }
 
-	public User authenticate(String username, String email, String password) {
-		return ldap.authenticate(username, email, password);
+	public User authenticate(String identification, String password) {
+		return ldap.authenticate(identification, password);
 	}
 
 	@Override
