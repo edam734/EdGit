@@ -71,6 +71,10 @@ public class GitFile implements Serializable {
 		return fileId;
 	}
 
+	public void setFileId(Long fileId) {
+		this.fileId = fileId;
+	}
+
 	public GitFile getFolder() {
 		return folder;
 	}

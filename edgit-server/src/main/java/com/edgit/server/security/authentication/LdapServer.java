@@ -2,6 +2,7 @@ package com.edgit.server.security.authentication;
 
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -15,6 +16,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
 
 import com.edgit.server.domain.User;
+import com.edgit.server.jpa.GitFile;
 
 public class LdapServer {
 
@@ -72,14 +74,15 @@ public class LdapServer {
 
 	private String findDistinctNameOfAccount(DirContext ctx, String ldapSearchBase, String identification)
 			throws NamingException {
-		String filter = "(&(objectClass=inetOrgPerson)(|(uid={0})(mail={0})))";
+		String filter = "(&(objectClass=edgitClient)(|(uid={0})(mail={0})))";
 
 		SearchControls controls = new SearchControls();
 		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 		controls.setReturningAttributes(new String[0]);
 		controls.setReturningObjFlag(true);
 
-		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { identification }, controls);
+		NamingEnumeration<SearchResult> enm = ctx.search(ldapSearchBase, filter, new String[] { identification },
+				controls);
 		String dn = null;
 
 		if (enm.hasMore()) {
@@ -130,10 +133,54 @@ public class LdapServer {
 		Attribute username = attributes.get("uid");
 		Attribute firstName = attributes.get("cn");
 		Attribute lastName = attributes.get("sn");
+		Attribute emailAddress = attributes.get("mail");
+		String rootRepositoryStr = attributes.get("rootRepository").get().toString();
+
+		GitFile userRoot = new GitFile();
+		StringTokenizer st = new StringTokenizer(rootRepositoryStr, ";");
+		while (st.hasMoreElements()) {
+			String element = st.nextToken();
+			String[] kv = element.split(":");
+			String key = getKey(kv);
+			String value = getValue(kv);
+			switch (key) {
+			case "id":
+				userRoot.setFileId(Long.parseLong(value));
+				break;
+			case "folder":
+				userRoot.setFolder(null);
+				break;
+			case "filename":
+				userRoot.setFilename(value);
+				break;
+			case "description":
+				userRoot.setDescription(value);
+				break;
+			case "isFile":
+				userRoot.setIsFile(Boolean.parseBoolean(value));
+			default:
+				;
+			}
+		}
+
 		user.setUsername(username.get().toString());
 		user.setFirstName(firstName.get().toString());
 		user.setLastName(lastName.get().toString());
+		user.setEmailAddress(emailAddress.get().toString());
+		user.setRootRepository(userRoot);
 
 		return user;
+	}
+
+	private String getKey(String[] kv) {
+		return kv[0];
+	}
+
+	private String getValue(String[] kv) {
+		try {
+			return kv[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return "";
+		}
 	}
 }

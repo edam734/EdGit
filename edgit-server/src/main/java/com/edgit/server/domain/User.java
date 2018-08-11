@@ -79,4 +79,10 @@ public class User {
 		this.rootRepository = rootRepository;
 	}
 
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", emailAddress=" + emailAddress + ", phoneNumber=" + phoneNumber + ", birthDate="
+				+ birthDate + ", rootRepository=" + rootRepository + "]";
+	}
 }
