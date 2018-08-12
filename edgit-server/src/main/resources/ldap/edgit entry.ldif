@@ -1,0 +1,7 @@
+version: 1
+
+dn: ou=edgit,o=ed
+objectClass: organizationalUnit
+objectClass: top
+ou: edgit
+   
