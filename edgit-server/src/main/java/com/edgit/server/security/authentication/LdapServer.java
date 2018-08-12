@@ -100,11 +100,12 @@ public class LdapServer {
 	}
 
 	/**
+	 * Verifies the user's password. Try to initialize the cloned context
+	 * environment. If the user credentials are different from the originals, it
+	 * throws an exception.
+	 * <p>
 	 * A cloning of the context environment is done so the original environment
 	 * it's not modified.
-	 * <p>
-	 * Try to initialize the cloned context environment. If the user credentials
-	 * are different from the originals, it throws an exception.
 	 * 
 	 * @param ctx
 	 *            The original context

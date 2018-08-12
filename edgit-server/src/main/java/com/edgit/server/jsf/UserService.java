@@ -8,7 +8,7 @@ public interface UserService {
 
 //	public User getUser(String username);
 	
-	public User authenticate(String identification, String password);
+	public User authenticateUser(String identification, String password);
 
 	public void saveUser(User user) throws NamingException;
 }

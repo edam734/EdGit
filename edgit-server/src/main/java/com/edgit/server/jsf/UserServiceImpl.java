@@ -11,8 +11,9 @@ import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.EdGitRepositoryManager;
 import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
-import com.edgit.server.security.authentication.LdapPartitionManager;
-import com.edgit.server.security.authentication.LdapServer;
+import com.edgit.server.services.AuthenticationService;
+import com.edgit.server.services.AuthenticationServiceFactory;
+import com.edgit.server.services.AuthenticationType;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -20,15 +21,15 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private RepositoryServiceImpl repositoryService;
 
-	private LdapServer ldap;
+	private AuthenticationService authenticationService;
 
 	@PostConstruct
 	private void init() {
-		ldap = new LdapServer();
+		authenticationService = AuthenticationServiceFactory.getAuthenticationService(AuthenticationType.LDAP);
 	}
 
-	public User authenticate(String identification, String password) {
-		return ldap.authenticate(identification, password);
+	public User authenticateUser(String identification, String password) {
+		return authenticationService.authenticate(identification, password);
 	}
 
 	@Override
@@ -40,9 +41,7 @@ public class UserServiceImpl implements UserService {
 		// outside of the transaction will appear with the generated ID.
 		user.setRootRepository(root);
 		// save user
-		LdapPartitionManager partitionManager = ldap.getPartitionManager();
-		partitionManager.crateEntry(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
-				user.getEmailAddress(), user.getRootRepository());
+		authenticationService.save(user);
 		// Create the remote repository for this user
 		EdGitRepositoryManager.makeDirectory(
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));

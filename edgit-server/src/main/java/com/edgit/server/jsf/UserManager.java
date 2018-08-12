@@ -23,7 +23,7 @@ public class UserManager implements Serializable {
 
 	public String signIn(String identification, String password) {
 		User user = null;
-		if ((user = userService.authenticate(identification, password)) != null) {
+		if ((user = userService.authenticateUser(identification, password)) != null) {
 			currentUser = user;
 			return "homepage"; // go to home page
 			
