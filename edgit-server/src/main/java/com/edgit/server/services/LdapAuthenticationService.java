@@ -1,12 +1,20 @@
 package com.edgit.server.services;
 
+import java.io.Serializable;
+
+import javax.ejb.Stateful;
 import javax.naming.NamingException;
 
 import com.edgit.server.domain.User;
+import com.edgit.server.jsf.util.Authentication;
 import com.edgit.server.security.authentication.LdapServer;
 
-public class LdapAuthenticationService implements AuthenticationService {
+@Stateful
+@Authentication(AuthenticationType.LDAP)
+public class LdapAuthenticationService implements Serializable, AuthenticationService {
 
+	private static final long serialVersionUID = 1l;
+	
 	private LdapServer ldap;
 
 	public LdapAuthenticationService() {

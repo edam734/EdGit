@@ -1,8 +1,9 @@
 package com.edgit.server.jsf;
 
+import static com.edgit.server.services.AuthenticationType.LDAP;
+
 import java.io.File;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.naming.NamingException;
@@ -11,9 +12,8 @@ import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.EdGitRepositoryManager;
 import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
+import com.edgit.server.jsf.util.Authentication;
 import com.edgit.server.services.AuthenticationService;
-import com.edgit.server.services.AuthenticationServiceFactory;
-import com.edgit.server.services.AuthenticationType;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -21,12 +21,14 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private RepositoryServiceImpl repositoryService;
 
+	@Inject
+	@Authentication(LDAP)
 	private AuthenticationService authenticationService;
 
-	@PostConstruct
-	private void init() {
-		authenticationService = AuthenticationServiceFactory.getAuthenticationService(AuthenticationType.LDAP);
-	}
+//	@PostConstruct
+//	private void init() {
+//		authenticationService = AuthenticationServiceFactory.getAuthenticationService(AuthenticationType.LDAP);
+//	}
 
 	public User authenticateUser(String identification, String password) {
 		return authenticationService.authenticate(identification, password);
@@ -47,3 +49,4 @@ public class UserServiceImpl implements UserService {
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
 	}
 }
+
