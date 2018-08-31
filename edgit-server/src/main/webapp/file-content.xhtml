@@ -5,10 +5,13 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/page-template.xhtml">
+	<!-- 	<ui:param name="pageTitle" value="File Content" /> -->
 	<f:metadata>
-		<f:viewParam name="fileName" value="#{fileContentPage.filename}" />
+		<f:viewParam name="currentFolderId"
+			value="#{fileExplorerHelperBean.currentFolderId}" />
 		<f:viewAction action="#{fileContentPage.searchSubfiles}" />
 	</f:metadata>
+
 	<ui:define name="panel-main">
 		<ui:fragment rendered="#{empty fileContentPage.subfiles}">
 			<p>-- Pasta ainda sem conteúdo. --</p>
@@ -24,10 +27,13 @@
 								<!-- TODO: se o utilizador tiver permissões, pode baixar o ficheiro -->
 							</ui:fragment>
 							<ui:fragment rendered="#{not line.isFile}">
-								<h:outputLink value="file-content.xhtml">
-									<f:param name="fileName" value="#{line.filename}" />
-										#{line.filename}
-								</h:outputLink>
+								<h:commandLink value="#{line.filename}"
+									action="file-content?faces-redirect=true&amp;includeViewParams=true"
+									actionListener="#{fileExplorerHelperBean.stepDown}">
+									<f:param name="selectedFileName" value="#{line.filename}" />
+									<f:param name="currentFolderId"
+										value="#{fileExplorerHelperBean.currentFolderId}" />
+								</h:commandLink>
 							</ui:fragment>
 						</h:column>
 					</h:dataTable>
