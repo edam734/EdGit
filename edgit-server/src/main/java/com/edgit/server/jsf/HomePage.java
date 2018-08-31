@@ -48,7 +48,9 @@ public class HomePage implements Serializable {
 
 	@PostConstruct
 	private void loadUserRepositories() {
-		repositories = repositoryManager.search(userManager.getCurrentUser().getUsername());
+		// repositories =
+		// repositoryManager.search(userManager.getCurrentUser().getUsername());
+		repositories = repositoryManager.search(userManager.getCurrentUser().getRootRepository().getFileId());
 	}
 
 	public List<GitFile> getRepositories() {
@@ -60,7 +62,7 @@ public class HomePage implements Serializable {
 	}
 
 	public String upload() throws ServletException, IOException {
-		return fileUploader.upload(part);
+		 return fileUploader.upload(part);
 	}
 
 	public String download() {

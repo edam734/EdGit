@@ -9,10 +9,14 @@
 		<h3>#{repository.filename}</h3>
 		<p>#{repository.description}</p>
 		<p>Data da criação: #{repository.inceptionDate}</p>
-		<h:outputLink value="file-content.xhtml">
-			<f:param name="fileName" value="#{repository.filename}" />
-			#{repository.filename}
-		</h:outputLink>
+		<!-- Using Post-Redirect-Get pattern-->
+		<h:commandLink value="#{repository.filename}"
+			action="file-content?faces-redirect=true&amp;includeViewParams=true"
+			actionListener="#{fileExplorerHelperBean.stepDown}">
+			<f:param name="selectedFileName" value="#{repository.filename}" />
+			<f:param name="currentFolderId"
+				value="#{fileExplorerHelperBean.userRepositoryId}" /> 
+		</h:commandLink>
 	</section>
 </ui:composition>
 </html>

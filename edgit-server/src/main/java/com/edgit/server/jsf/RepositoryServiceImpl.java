@@ -27,11 +27,16 @@ public class RepositoryServiceImpl implements RepositoryService {
 		persistenceHandler.create(parent, repositoryName, description, false);
 	}
 
-	public List<GitFile> getSubfiles(String name) {
-		return persistenceHandler.getSubfiles(name);
-	}
+//	public List<GitFile> getSubfiles(String name) {
+//		return persistenceHandler.getSubfiles(name);
+//	}
 
+	public List<GitFile> getSubfiles(Long parentId) {
+		return persistenceHandler.getSubfiles(parentId);
+	}
+	
 	public boolean createEntry(Path path, String filename, GitFile repo, String description) {
 		return persistenceHandler.createEntry(path, filename, repo, description);
 	}
+
 }

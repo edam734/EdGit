@@ -18,14 +18,23 @@ public class RepositoryManager {
 	@Inject
 	private RepositoryServiceImpl repositoryService;
 
-	public List<GitFile> search(String name) {
-		return searchRepositories(name);
+//	public List<GitFile> search(String name) {
+//		return searchRepositories(name);
+//	}
+
+	public List<GitFile> search(Long parentId) {
+		return searchRepositories(parentId);
 	}
 
-	private List<GitFile> searchRepositories(String username) {
-		List<GitFile> repositories = repositoryService.getSubfiles(username);
+	private List<GitFile> searchRepositories(Long parentId) {
+		List<GitFile> repositories = repositoryService.getSubfiles(parentId);
 		return repositories == null ? new ArrayList<GitFile>() : repositories;
 	}
+
+//	private List<GitFile> searchRepositories(String username) {
+//		List<GitFile> repositories = repositoryService.getSubfiles(username);
+//		return repositories == null ? new ArrayList<GitFile>() : repositories;
+//	}
 
 	public void createRepository(String repositoryName, String description) {
 		GitFile userRoot = userManager.getCurrentUser().getRootRepository();
@@ -36,4 +45,5 @@ public class RepositoryManager {
 		GitFile repo = userManager.getCurrentUser().getRootRepository();
 		return repositoryService.createEntry(path, filename, repo, description);
 	}
+
 }

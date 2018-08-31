@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/page-template.xhtml">
     <ui:param name="pageTitle" value="Welcome Page"/>
 	<ui:define name="panel-main">
 		<section>
 			<h:form>
-<!-- 			<p>CurrentUser: #{userManager.currentUser}</p> -->
 				<h:panelGrid columns="2">
 					<h:outputLabel for="identification">Username ou Email</h:outputLabel>
 					<h:inputText id="identification" value="#{signIn.identification}" />

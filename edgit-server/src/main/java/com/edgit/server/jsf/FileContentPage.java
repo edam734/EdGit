@@ -17,20 +17,15 @@ public class FileContentPage implements Serializable {
 
 	@Inject
 	private RepositoryManager repositoryManager;
+	
+	@Inject
+	private FileExplorerHelperBean fileExplorerHelperBean;
 
-	private String filename;
 	private List<GitFile> subfiles;
 
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
 	public void searchSubfiles() {
-		subfiles = repositoryManager.search(filename);
+		Long currentFolder = fileExplorerHelperBean.getCurrentFolderId();
+		subfiles = repositoryManager.search(currentFolder);
 	}
 
 	public List<GitFile> getSubfiles() {
@@ -40,5 +35,4 @@ public class FileContentPage implements Serializable {
 	public void setSubfiles(List<GitFile> subfiles) {
 		this.subfiles = subfiles;
 	}
-
 }
