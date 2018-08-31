@@ -68,7 +68,7 @@ public class PersistenceHandler {
 		}
 		return userRepo.getFileId();
 	}
-	
+
 	public List<GitFile> getSubfiles(Long parentId) {
 		EntityManager em = getEntityManagerFactory().createEntityManager();
 		List<GitFile> subfiles;
@@ -82,20 +82,6 @@ public class PersistenceHandler {
 
 		return subfiles;
 	}
-
-//	public List<GitFile> getSubfiles(String name) {
-//		EntityManager em = getEntityManagerFactory().createEntityManager();
-//		List<GitFile> subfiles;
-//
-//		try {
-//			GitFileDAO dao = new GitFileDAO(em);
-//			subfiles = dao.findSubfilesOfFolder(name);
-//		} finally {
-//			em.close();
-//		}
-//
-//		return subfiles;
-//	}
 
 	/**
 	 * Creates an entry in the GitFile table of the database (if it does not

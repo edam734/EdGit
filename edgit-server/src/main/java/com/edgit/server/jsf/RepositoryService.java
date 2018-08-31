@@ -11,8 +11,6 @@ public interface RepositoryService {
 
 	void createRepository(GitFile parent, String repositoryName, String description);
 
-//	List<GitFile> getSubfiles(String name);
-	
 	List<GitFile> getSubfiles(Long parentId);
 
 	boolean createEntry(Path path, String filename, GitFile repo, String description);
