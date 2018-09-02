@@ -9,7 +9,7 @@
 		<h3>#{repository.filename}</h3>
 		<p>#{repository.description}</p>
 		<p>Data da criação: #{repository.inceptionDate}</p>
-		<!-- Using Post-Redirect-Get pattern-->
+		<!-- Using Post-Redirect-Get pattern -->
 		<h:commandLink value="#{repository.filename}"
 			action="file-content?faces-redirect=true&amp;includeViewParams=true"
 			actionListener="#{fileExplorerHelperBean.stepDown}">

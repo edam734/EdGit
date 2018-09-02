@@ -25,8 +25,9 @@ public class UserManager implements Serializable {
 		User user = null;
 		if ((user = userService.authenticateUser(identification, password)) != null) {
 			currentUser = user;
-			return "homepage"; // go to home page
-			
+			// Redirect is just to URL reflect the current page
+			return "homepage?faces-redirect=true"; // go to home page
+
 		} else {
 			return ""; // stay in the same page
 		}
@@ -53,7 +54,9 @@ public class UserManager implements Serializable {
 		try {
 			userService.saveUser(user);
 			currentUser = user;
-			return "homepage"; // Home Page
+			// I now use the redirect for the URL to reflect the current page
+			// and not the previous page
+			return "homepage?faces-redirect=true"; // Home Page
 		} catch (NamingException e) {
 			// couldn't save user...
 			e.printStackTrace();

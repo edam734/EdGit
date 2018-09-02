@@ -45,7 +45,8 @@ public class FileUploader {
 			writeOnDisk(p, file);
 			persist(path);
 		}
-		return "homepage?faces-redirect=true";
+		// No redirection anymore. Just using AJAX to refresh a component
+		return "homepage"; /* ?faces-redirect=true */
 	}
 
 	private void writeOnDisk(Part p, File file) throws IOException {

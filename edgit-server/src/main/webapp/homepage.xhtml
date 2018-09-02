@@ -8,24 +8,26 @@
 <ui:composition template="/page-template.xhtml">
 	<ui:param name="pageTitle" value="Home Page" />
 	<ui:define name="panel-main">
-		<ui:fragment rendered="#{empty homePage.repositories}">
-			<h2>Ainda não tem projectos criados.</h2>
-		</ui:fragment>
-		<ui:fragment rendered="#{not empty homePage.repositories}">
-			<section>
-				<h:form>
-					<h2>Os seus repositórios</h2>
-					<ui:repeat value="#{homePage.repositories}" var="repository">
-						<ui:decorate template="/project-summary.xhtml">
-							<ui:param name="repository" value="#{repository}" />
-						</ui:decorate>
-						<h:commandButton value="Download" action="#{homePage.download()}">
-							<f:param name="repositoryName" value="#{repository.filename}" />
-						</h:commandButton>
-					</ui:repeat>
-				</h:form>
-			</section>
-		</ui:fragment>
+		<h:panelGroup id="panel1" layout="block">
+			<ui:fragment rendered="#{empty homePage.repositories}">
+				<h2>Ainda não tem projectos criados.</h2>
+			</ui:fragment>
+			<ui:fragment rendered="#{not empty homePage.repositories}">
+				<section>
+					<h:form id="formR">
+						<h2>Os seus repositórios</h2>
+						<ui:repeat value="#{homePage.repositories}" var="repository">
+							<ui:decorate template="/project-summary.xhtml">
+								<ui:param name="repository" value="#{repository}" />
+							</ui:decorate>
+							<h:commandButton value="Download" action="#{homePage.download()}">
+								<f:param name="repositoryName" value="#{repository.filename}" />
+							</h:commandButton>
+						</ui:repeat>
+					</h:form>
+				</section>
+			</ui:fragment>
+		</h:panelGroup>
 		<h:outputLink value="project-creation.xhtml">Comece um novo Projecto</h:outputLink>
 		<br />
 		<h:form enctype="multipart/form-data">
@@ -33,7 +35,10 @@
 			<h:inputFile value="#{homePage.part}" a:multiple="true"
 				a:directory="true" a:webkitdirectory="true" />
 			<br />
-			<h:commandButton value="upload" action="#{homePage.upload()}" />
+			<h:commandButton value="upload" action="#{homePage.upload()}">
+				<!-- ":formR" is needed to be specified in f:ajax due to JSF spec issue 790 (in Mojarra the issue is not fixed yet) -->
+				<f:ajax execute="@form" render=":panel1 :formR" />
+			</h:commandButton>
 		</h:form>
 	</ui:define>
 </ui:composition>
