@@ -5,7 +5,7 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<ui:composition template="/page-template.xhtml">
+<ui:composition template="/templates/page-template.xhtml">
 	<ui:param name="pageTitle" value="Home Page" />
 	<ui:define name="panel-main">
 		<h:panelGroup id="panel1" layout="block">
@@ -17,7 +17,7 @@
 					<h:form id="formR">
 						<h2>Os seus repositórios</h2>
 						<ui:repeat value="#{homePage.repositories}" var="repository">
-							<ui:decorate template="/project-summary.xhtml">
+							<ui:decorate template="/templates/project-summary.xhtml"> 
 								<ui:param name="repository" value="#{repository}" />
 							</ui:decorate>
 							<h:commandButton value="Download" action="#{homePage.download()}">
