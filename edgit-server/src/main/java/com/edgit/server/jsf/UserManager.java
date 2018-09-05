@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
 
+import org.slf4j.Logger;
+
 import com.edgit.server.domain.User;
 
 @Named
@@ -15,6 +17,9 @@ import com.edgit.server.domain.User;
 public class UserManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@Inject
+	private Logger log;
 
 	private User currentUser;
 
@@ -51,6 +56,9 @@ public class UserManager implements Serializable {
 	}
 
 	public String saveUser(User user) {
+		// para teste do logger
+		log.debug("Esta eh uma mensagem debug !");
+		log.info("Esta eh uma mensagem info !");
 		try {
 			userService.saveUser(user);
 			currentUser = user;
