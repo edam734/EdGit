@@ -17,7 +17,9 @@
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/edgit_server" />
 			<property name="hibernate.connection.username" value="appuser" />
 			<property name="hibernate.connection.password" value="appuser" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+<!-- 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" /> -->
+			<property name="hibernate.dialect" value="com.edgit.server.jpa.EdGitMySQL5Dialect" />
+<!-- 			<property name="hibernate.dialect.storage_engine" value="innodb" /> -->
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
