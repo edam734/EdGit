@@ -19,4 +19,4 @@ public interface PersistenceHandler {
 	
 	boolean createEntry(Path path, String filename, GitFile repo, String description);
 
-}
+} 

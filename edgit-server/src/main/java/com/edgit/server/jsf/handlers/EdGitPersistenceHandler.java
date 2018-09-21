@@ -19,7 +19,7 @@ import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jpa.dao.GitFileDAO;
 
 @Stateless
-public class EdGitPersistenceHandler implements PersistenceHandler {
+public class EdGitPersistenceHandler implements PersistenceHandler { 
 
 	public static final String PUNIT_NAME = "edgitserverPU";
 
