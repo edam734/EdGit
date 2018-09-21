@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 
 import com.edgit.server.jpa.GitFile;
 
-@Local
 public interface PersistenceService {
 	
 	EntityManager getEntityManager();
