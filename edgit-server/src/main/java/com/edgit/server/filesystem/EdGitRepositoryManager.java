@@ -35,6 +35,12 @@ public class EdGitRepositoryManager {
 	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	/**
+	 * An utility class should not have public constructors
+	 */
+	private EdGitRepositoryManager() {
+	}
+
+	/**
 	 * Place a new file in the appropriate location on the remote server, write
 	 * to the ".index.txt" file who uploaded this version, and update the file's
 	 * name version
