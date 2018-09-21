@@ -13,7 +13,7 @@ import com.edgit.server.jsf.handlers.PersistenceHandler;
 
 @Named
 @SessionScoped
-public class FileExplorerHelperBean implements Serializable {
+public class FileExplorerHelperBean implements Serializable { 
 
 	private static final long serialVersionUID = 1L;
 	

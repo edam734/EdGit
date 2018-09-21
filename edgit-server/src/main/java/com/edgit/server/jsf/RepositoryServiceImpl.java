@@ -13,7 +13,7 @@ import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jsf.handlers.PersistenceHandler;
 
 @ApplicationScoped
-public class RepositoryServiceImpl implements RepositoryService {
+public class RepositoryServiceImpl implements RepositoryService { 
 
 	private static final String EMPTY_STRING = "";
 
