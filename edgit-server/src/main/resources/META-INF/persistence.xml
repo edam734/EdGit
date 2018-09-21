@@ -6,7 +6,7 @@
 	<persistence-unit name="edgitserverPU"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<jta-data-source>jdbc/EdGit</jta-data-source>
+<!-- 		<jta-data-source>java:app/jdbc/EdGitPool</jta-data-source> -->
 		
 		<class>com.edgit.server.jpa.GitFile</class>
 

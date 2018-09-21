@@ -1,5 +1,6 @@
 package com.edgit.server.security.authentication;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -18,7 +19,9 @@ import javax.naming.ldap.LdapContext;
 import com.edgit.server.domain.User;
 import com.edgit.server.jpa.GitFile;
 
-public class LdapServer {
+public class LdapServer implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	// the suffix (base DN) associated with the partition
 	public static final String PARTITION_SUFIX = "o=ed";

@@ -22,9 +22,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.edgit.commons.network.BinamedFile;
-import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.ALREADY_EXISTS;
-import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.CREATED;
-import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.NOT_CREATED;
+import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.*;
 
 /**
  * Utilities for manipulating files in the remote repository.

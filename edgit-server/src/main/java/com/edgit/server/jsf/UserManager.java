@@ -2,11 +2,13 @@ package com.edgit.server.jsf;
 
 import java.io.Serializable;
 
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
+import javax.transaction.UserTransaction;
 
 import org.slf4j.Logger;
 
@@ -56,9 +58,6 @@ public class UserManager implements Serializable {
 	}
 
 	public String saveUser(User user) {
-		// para teste do logger
-		log.debug("Esta eh uma mensagem debug !");
-		log.info("Esta eh uma mensagem info !");
 		try {
 			userService.saveUser(user);
 			currentUser = user;
@@ -66,8 +65,8 @@ public class UserManager implements Serializable {
 			// and not the previous page
 			return "homepage?faces-redirect=true"; // Home Page
 		} catch (NamingException e) {
-			// couldn't save user...
-			e.printStackTrace();
+			// TODO execute rollback
+			log.error("Couldn't save user {}", user.toString(), e);
 		}
 		return "";
 	}

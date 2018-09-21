@@ -3,8 +3,6 @@ package com.edgit.server.jsf.handlers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +13,6 @@ import java.util.zip.ZipOutputStream;
 import javax.ejb.Stateless;
 
 import com.edgit.commons.network.BinamedFile;
-import com.edgit.commons.network.NetworkFileUtils;
 import com.edgit.server.domain.User;
 import com.edgit.server.filesystem.EdGitRepositoryManager;
 

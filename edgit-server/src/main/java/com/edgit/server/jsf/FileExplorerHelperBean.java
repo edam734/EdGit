@@ -3,6 +3,7 @@ package com.edgit.server.jsf;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -21,12 +22,13 @@ public class FileExplorerHelperBean implements Serializable {
 
 	private Long userRepositoryId;
 	private Long currentFolderId;
+	
+	@EJB
 	private PersistenceHandler persistenceHandler;
 
 	@PostConstruct
 	private void init() {
 		this.userRepositoryId = userManager.getCurrentUser().getRootRepository().getFileId();
-		this.persistenceHandler = new PersistenceHandler();
 	}
 
 	public Long getUserRepositoryId() {
