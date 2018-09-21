@@ -9,7 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.edgit.server.jsf.handlers.PersistenceHandler;
+import com.edgit.server.jsf.handlers.PersistenceService;
 
 @Named
 @SessionScoped
@@ -24,7 +24,7 @@ public class FileExplorerHelperBean implements Serializable {
 	private Long currentFolderId;
 	
 	@EJB
-	private PersistenceHandler persistenceHandler;
+	private PersistenceService persistenceService;
 
 	@PostConstruct
 	private void init() {
@@ -56,6 +56,6 @@ public class FileExplorerHelperBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("currentFolderId"));
 		String fname = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
 				.get("selectedFileName");
-		this.currentFolderId = persistenceHandler.getCurrentFolderId(id, fname);
+		this.currentFolderId = persistenceService.getCurrentFolderId(id, fname);
 	}
 }

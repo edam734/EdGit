@@ -19,13 +19,13 @@ import com.edgit.server.jpa.GitFile;
 import com.edgit.server.jpa.dao.GitFileDAO;
 
 @Stateless
-public class EdGitPersistenceHandler implements PersistenceHandler { 
+public class EdGitPersistenceBean implements PersistenceService { 
 
 	public static final String PUNIT_NAME = "edgitserverPU";
 
 	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
 			.createEntityManagerFactory(PUNIT_NAME);
-	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceBean.class);
 
 	private EntityManager entityManager;
 
