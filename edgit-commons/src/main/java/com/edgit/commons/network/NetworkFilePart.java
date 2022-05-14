@@ -3,6 +3,9 @@ package com.edgit.commons.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The objects in this class represent a part of a file that contains an array

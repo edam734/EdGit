@@ -5,44 +5,62 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<ui:composition template="/page-template.xhtml">
+<ui:composition template="/templates/page-template.xhtml">
 	<f:metadata>
 		<f:viewAction action="#{userDetails.onload}" />
 	</f:metadata>
-    <ui:param name="pageTitle" value="USer Details Page"/>
+	<ui:param name="pageTitle" value="USer Details Page" />
 	<ui:define name="panel-main">
 		<section>
 			<h:form>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:outputLabel for="username">Username</h:outputLabel>
 					<h:inputText id="username" value="#{userDetails.user.username}"
-						size="20" />
+						size="20">
+						<f:ajax event="blur" render="input1" />
+					</h:inputText>
+					<h:message id="input1" for="username" />
 
 					<h:outputLabel for="password">Password</h:outputLabel>
 					<h:inputSecret id="password" value="#{userDetails.user.password}"
-						size="20" />
+						size="20">
+						<f:ajax event="blur" render="input2" />
+					</h:inputSecret>
+					<h:message id="input2" for="password" />
 
 					<h:outputLabel for="firstName">First name</h:outputLabel>
 					<h:inputText id="firstName" value="#{userDetails.user.firstName}"
-						size="30" />
+						size="30">
+						<f:ajax event="blur" render="input3" />
+					</h:inputText>
+					<h:message id="input3" for="firstName" />
 
 					<h:outputLabel for="lastName">Last name</h:outputLabel>
 					<h:inputText id="lastName" value="#{userDetails.user.lastName}"
-						size="30" />
+						size="30">
+						<f:ajax event="blur" render="input4" />
+					</h:inputText>
+					<h:message id="input4" for="lastName" />
 
 					<h:outputLabel for="emailAddress">E-mail address</h:outputLabel>
 					<h:inputText id="emailAddress"
-						value="#{userDetails.user.emailAddress}" size="20" />
+						value="#{userDetails.user.emailAddress}" size="50">
+						<f:ajax event="blur" render="input5" />
+					</h:inputText>
+					<h:message id="input5" for="emailAddress" />
 
 					<h:outputLabel for="phoneNumber">Phone number</h:outputLabel>
 					<h:inputText id="phoneNumber"
 						value="#{userDetails.user.phoneNumber}" size="20" />
+					<h:outputText />
 
 					<h:outputLabel for="birthDate">Birth date</h:outputLabel>
 					<h:inputText id="birthDate" p:type="date"
 						value="#{userDetails.user.birthDate}">
 						<f:convertDateTime pattern="yyyy-MM-dd" />
+						<f:ajax event="blur" render="input6" />
 					</h:inputText>
+					<h:message id="input6" for="birthDate" />
 
 					<h:outputText value="" />
 					<h:commandButton value="Submit" action="#{userDetails.submit}" />

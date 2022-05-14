@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -21,6 +24,20 @@ import com.edgit.commons.network.exceptions.IllegalLengthNameException;
 public class NetworkFile implements Serializable {
 
 	private static final long serialVersionUID = 119376898498462454L;
+
+	private static final Charset[] charsets = {
+
+			StandardCharsets.ISO_8859_1,
+
+			StandardCharsets.US_ASCII,
+
+			StandardCharsets.UTF_16,
+
+			StandardCharsets.UTF_16BE,
+
+			StandardCharsets.UTF_16LE,
+
+			StandardCharsets.UTF_8 };
 
 	private File file;
 	private NetworkFileName filename;
@@ -86,7 +103,21 @@ public class NetworkFile implements Serializable {
 	 * @throws IOException
 	 */
 	public NetworkFilePart readFilePart() throws IOException {
-		NetworkFilePart part = new NetworkFilePart(getReader(), leftToRead);
+		NetworkFilePart part = null;
+
+		int i = 0;
+		do {
+			try {
+				part = new NetworkFilePart(getReader(charsets[i]), leftToRead);
+			} catch (MalformedInputException e) {
+				i++;
+				continue;
+			}
+			break;
+		} while (true);
+		
+		System.out.println("O charset que resultou foi o = " + charsets[i]);
+
 		leftToRead -= NetworkFilePart.PART_SIZE;
 		return part;
 	}
@@ -104,9 +135,9 @@ public class NetworkFile implements Serializable {
 	 * For the same instance of this object, the BufferedReader should always be
 	 * the same.
 	 */
-	private BufferedReader getReader() throws IOException {
+	private BufferedReader getReader(Charset charset) throws IOException {
 		if (reader == null) {
-			reader = Files.newBufferedReader(file.toPath());
+			reader = Files.newBufferedReader(file.toPath(), charset);
 		}
 		return reader;
 	}
@@ -150,7 +181,7 @@ public class NetworkFile implements Serializable {
 	 *             if failed or interrupted I/O operations occurs.
 	 */
 	public void setWriter(Path path) throws IOException {
-		writer = Files.newBufferedWriter(path);
+		writer = Files.newBufferedWriter(path, StandardCharsets.ISO_8859_1);
 	}
 
 	/**

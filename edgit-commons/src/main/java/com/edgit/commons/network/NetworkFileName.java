@@ -1,6 +1,7 @@
 package com.edgit.commons.network;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.edgit.commons.network.exceptions.IllegalLengthNameException;
 
@@ -42,4 +43,10 @@ public class NetworkFileName implements Serializable {
 	public byte[] getFilename() {
 		return filename;
 	}
+
+	@Override
+	public String toString() {
+		return "NetworkFileName [filename=" + Arrays.toString(filename) + "]";
+	}
+
 }

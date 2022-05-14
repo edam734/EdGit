@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+	<jdbc-connection-pool name="java:app/EdGitPool"
+		res-type="javax.sql.ConnectionPoolDataSource" datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"
+		steady-pool-size="8" max-pool-size="32" pool-resize-quantity="2"
+		idle-timeout-in-seconds="300" max-wait-time-in-millis="60000"
+		is-isolation-level-guaranteed="true">
+		<property name="URL" value="jdbc:mysql://localhost:3306/edgit_server" />
+		<property name="User" value="appuser" />
+		<property name="Password" value="appuser" />
+		<property name="portNumber" value="3306" />
+		<property name="databaseName" value="edgit_server" />
+		<property name="serverName" value="localhost" />
+	</jdbc-connection-pool>
+	<jdbc-resource jndi-name="java:app/jdbc/EdGitPool" pool-name="java:app/EdGitPool" />
+</resources>
