@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app>
+<glassfish-web-app>
+	<class-loader delegate="false" />
+</glassfish-web-app> 
