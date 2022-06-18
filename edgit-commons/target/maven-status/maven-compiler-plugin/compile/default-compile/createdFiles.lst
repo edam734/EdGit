@@ -1,7 +1,0 @@
-com\edgit\commons\network\NumberOfParts.class
-com\edgit\commons\network\NetworkFilePart.class
-com\edgit\commons\network\BinamedFile.class
-com\edgit\commons\network\exceptions\IllegalLengthNameException.class
-com\edgit\commons\network\NetworkFileUtils.class
-com\edgit\commons\network\NetworkFileName.class
-com\edgit\commons\network\NetworkFile.class
