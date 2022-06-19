@@ -20,7 +20,8 @@ public class RepositoryServiceImpl implements RepositoryService {
 	@Inject
 	private Logger log;
 
-	@EJB
+//	@EJB
+	@Inject
 	private PersistenceService persistenceService;
 
 	public GitFile createRoot(String repositoryName) {

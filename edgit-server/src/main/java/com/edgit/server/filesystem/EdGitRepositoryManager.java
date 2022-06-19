@@ -65,7 +65,7 @@ public class EdGitRepositoryManager {
 
 		int version = 0;
 
-		UnfoldPathResolver unfoldPathResolver = new EdGitRepositoryManager().new UnfoldPathResolver(target);
+		UnfoldPathResolver unfoldPathResolver = new UnfoldPathResolver(target);
 		final Path directory = unfoldPathResolver.getDirectory();
 		final Path indexFile = unfoldPathResolver.getIndexFile();
 
@@ -186,7 +186,7 @@ public class EdGitRepositoryManager {
 	private static List<BinamedFile> getSubfiles(File file, List<BinamedFile> subfiles) {
 		if (file.isDirectory()) {
 			if (file.getName().contains(PathResolver.MARK)) {
-				FoldPathResolver foldPathResolver = new EdGitRepositoryManager().new FoldPathResolver(file.toPath());
+				FoldPathResolver foldPathResolver = new FoldPathResolver(file.toPath());
 				Path indexFile = foldPathResolver.getIndexFile();
 				int version = getMostRecentVersion(indexFile);
 
@@ -272,7 +272,7 @@ public class EdGitRepositoryManager {
 	 * @author Eduardo Amorim
 	 *
 	 */
-	class UnfoldPathResolver implements PathResolver {
+	static class UnfoldPathResolver implements PathResolver {
 
 		private String extension;
 		private String pureFilename;
@@ -336,8 +336,8 @@ public class EdGitRepositoryManager {
 	 * It also gets the unversioned filename.
 	 *
 	 */
-	class FoldPathResolver implements PathResolver {
-
+	static class FoldPathResolver implements PathResolver {
+ 
 		private String extension;
 		private Path directory;
 		private Path directoryName;

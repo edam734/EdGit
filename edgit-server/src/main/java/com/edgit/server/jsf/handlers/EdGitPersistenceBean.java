@@ -21,11 +21,12 @@ import com.edgit.server.jpa.dao.GitFileDAO;
 @Stateless
 public class EdGitPersistenceBean implements PersistenceService { 
 
+	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceBean.class);
+
 	public static final String PUNIT_NAME = "edgitserverPU";
 
 	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
 			.createEntityManagerFactory(PUNIT_NAME);
-	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceBean.class);
 
 	private EntityManager entityManager;
 

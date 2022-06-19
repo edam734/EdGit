@@ -23,7 +23,8 @@ public class FileExplorerHelperBean implements Serializable {
 	private Long userRepositoryId;
 	private Long currentFolderId;
 	
-	@EJB
+//	@EJB
+	@Inject
 	private PersistenceService persistenceService;
 
 	@PostConstruct

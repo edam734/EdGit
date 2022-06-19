@@ -3,7 +3,6 @@ package com.edgit.server.jsf.handlers;
 import java.nio.file.Path;
 import java.util.List;
 
-import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
 import com.edgit.server.jpa.GitFile;
