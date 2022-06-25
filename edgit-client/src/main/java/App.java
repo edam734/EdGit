@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.edgit.commons.network.NetworkFileUtils;
+import com.edgit.commons.network.to.remove.NetworkFileUtils;
 
 public class App {
 

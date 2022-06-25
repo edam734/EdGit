@@ -35,19 +35,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.2.3</version>
-			<scope>runtime</scope>
-			<!-- <scope>test</scope> -->
-		</dependency>
-
-		<dependency>
 			<groupId>com.edgit</groupId>
 			<artifactId>edgit-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
