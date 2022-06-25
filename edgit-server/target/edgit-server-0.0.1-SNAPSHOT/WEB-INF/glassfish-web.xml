@@ -2,4 +2,5 @@
 <!DOCTYPE glassfish-web-app>
 <glassfish-web-app>
 	<class-loader delegate="false" />
+	<context-root>/edgit-server</context-root>
 </glassfish-web-app> 

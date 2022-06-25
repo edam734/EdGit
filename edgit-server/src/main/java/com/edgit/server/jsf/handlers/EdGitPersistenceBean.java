@@ -21,7 +21,7 @@ import com.edgit.server.jpa.dao.GitFileDAO;
 @Stateless
 public class EdGitPersistenceBean implements PersistenceService { 
 
-	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceBean.class);
+//	private static final Logger LOG = LoggerFactory.getLogger(EdGitPersistenceBean.class);
 
 	public static final String PUNIT_NAME = "edgitserverPU";
 
@@ -60,7 +60,7 @@ public class EdGitPersistenceBean implements PersistenceService {
 			em.getTransaction().commit();
 
 		} catch (Exception e) {
-			LOG.error("Um erro ocorreu ao guardar o ficheiro", e);
+//			LOG.error("Um erro ocorreu ao guardar o ficheiro", e);
 			em.getTransaction().rollback();
 		} finally {
 			em.close();

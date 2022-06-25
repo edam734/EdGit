@@ -20,8 +20,8 @@ public class UserManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private Logger log;
+//	@Inject
+//	private Logger log;
 
 	private User currentUser;
 
@@ -66,7 +66,7 @@ public class UserManager implements Serializable {
 			return "homepage?faces-redirect=true"; // Home Page
 		} catch (NamingException e) {
 			// TODO execute rollback
-			log.error("Couldn't save user {}", user.toString(), e);
+//			log.error("Couldn't save user {}", user.toString(), e);
 		}
 		return "";
 	}

@@ -19,11 +19,11 @@ import org.slf4j.LoggerFactory;
  */
 public class EdGitMySQL5Dialect extends MySQL5Dialect {
 
-	private static final Logger LOG = LoggerFactory.getLogger(EdGitMySQL5Dialect.class);
+//	private static final Logger LOG = LoggerFactory.getLogger(EdGitMySQL5Dialect.class);
 
 	@Override
 	protected MySQLStorageEngine getDefaultMySQLStorageEngine() {
-		LOG.info("Set storage engine to InnoDB of MySQL.");
+//		LOG.info("Set storage engine to InnoDB of MySQL.");
 		return InnoDBStorageEngine.INSTANCE;
 	}
 }

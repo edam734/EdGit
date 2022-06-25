@@ -17,15 +17,15 @@ public class RepositoryServiceImpl implements RepositoryService {
 
 	private static final String EMPTY_STRING = "";
 
-	@Inject
-	private Logger log;
+//	@Inject
+//	private Logger log;
 
 //	@EJB
 	@Inject
 	private PersistenceService persistenceService;
 
 	public GitFile createRoot(String repositoryName) {
-		log.info("O valor de PersistenceHandler eh {}", persistenceService);
+//		log.info("O valor de PersistenceHandler eh {}", persistenceService);
 		return persistenceService.create(null, repositoryName, EMPTY_STRING, false);
 	}
 
