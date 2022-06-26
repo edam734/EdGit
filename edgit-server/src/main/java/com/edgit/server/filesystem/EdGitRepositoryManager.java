@@ -343,20 +343,12 @@ public class EdGitRepositoryManager {
 		public FoldPathResolver(Path path) {
 			resolve(path);
 		}
-		
-		public static void main(String[] args) {
-			Path path = Paths.get("C:\\Users\\Eduardo\\Desktop\\Ze\\nome com espaco\\nome com espaco  # TXT");
-			System.out.println(path);
-			FoldPathResolver resolver = new FoldPathResolver(path);
-			Path fileNewVersion = resolver.getVersionedFilename(2);
-			System.out.println(fileNewVersion);
-		}
 
 		public void resolve(Path path) {
 			directory = path;
 			extension = "." + directory.getFileName().toString().split(MARK)[1].toLowerCase();
 			directoryName = directory.getFileName().toString().split(MARK)[0];
-			indexFile = directory.resolve(directoryName + ".index.txt");
+			indexFile = directory.resolve(String.format("%s.index.txt", directoryName));
 		}
 
 		public Path getDirectory() {
@@ -368,7 +360,7 @@ public class EdGitRepositoryManager {
 		}
 
 		public Path getVersionedFilename(int newVersion) {
-			return Paths.get(String.format("%s%d%s", directory.resolve(directoryName + "-v"), newVersion, extension));
+			return directory.resolve(String.format("%s-v%d%s", directoryName, newVersion, extension));
 		}
 
 		/**
