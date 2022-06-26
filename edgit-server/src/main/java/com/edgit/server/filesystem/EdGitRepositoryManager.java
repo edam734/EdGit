@@ -41,19 +41,15 @@ public class EdGitRepositoryManager {
 	}
 
 	/**
-	 * Place a new file in the appropriate location on the remote server, write
-	 * to the ".index.txt" file who uploaded this version, and update the file's
-	 * name version
+	 * Place a new file in the appropriate location on the remote server, write to
+	 * the ".index.txt" file who uploaded this version, and update the file's name
+	 * version
 	 * 
-	 * @param in
-	 *            The input stream that carries the data
-	 * @param target
-	 *            The path to be modified
+	 * @param in          The input stream that carries the data
+	 * @param target      The path to be modified
 	 * @param updateIndex
-	 * @param username
-	 *            who uploaded this file
-	 * @param options
-	 *            Some copy options
+	 * @param username    who uploaded this file
+	 * @param options     Some copy options
 	 * @return true if was successful
 	 * @throws IOException
 	 */
@@ -126,13 +122,11 @@ public class EdGitRepositoryManager {
 	}
 
 	/**
-	 * Write a file in a zip with the appropriate name that is already contained
-	 * in the field "path" of the method's argument binamedFile
+	 * Write a file in a zip with the appropriate name that is already contained in
+	 * the field "path" of the method's argument binamedFile
 	 * 
-	 * @param binamedFile
-	 *            An object containing the file and the file's name
-	 * @param zos
-	 *            A zip to this file
+	 * @param binamedFile An object containing the file and the file's name
+	 * @param zos         A zip to this file
 	 * @throws IOException
 	 */
 	public static void sendFile(ZipOutputStream zos, BinamedFile binamedFile) throws IOException {
@@ -157,15 +151,14 @@ public class EdGitRepositoryManager {
 	}
 
 	/**
-	 * Returns all subfiles of this {@code file} with the name adapted to go to
-	 * the user.
+	 * Returns all subfiles of this {@code file} with the name adapted to go to the
+	 * user.
 	 * <p>
 	 * After this method is called, it's necessary to treat the name that goes
 	 * within BinamedFile, removing the part that corresponds to the name of the
 	 * user's repository.
 	 * 
-	 * @param file
-	 *            The file to search
+	 * @param file The file to search
 	 * @return All subfiles of this {@code file}
 	 */
 	public static List<BinamedFile> getAllSubfiles(File file) {
@@ -206,8 +199,7 @@ public class EdGitRepositoryManager {
 	/**
 	 * Creates a new directory if it does not already exist.
 	 * 
-	 * @param file
-	 *            A directory
+	 * @param file A directory
 	 * @requires file.isDirectory()
 	 * @return A BooleanResult with several possibilities
 	 */
@@ -259,13 +251,13 @@ public class EdGitRepositoryManager {
 	}
 
 	/**
-	 * Class that will apply file manipulation rules in the remote repository of
-	 * the client.
+	 * Class that will apply file manipulation rules in the remote repository of the
+	 * client.
 	 * <p>
-	 * For each file is created a new folder that will contain an ".index.txt"
-	 * file and the file itself with the version number in the name. E.g., the
-	 * file in the path client "/folder1/.../folderN/filename.pdf" will be
-	 * placed on the server in the following format <br/>
+	 * For each file is created a new folder that will contain an ".index.txt" file
+	 * and the file itself with the version number in the name. E.g., the file in
+	 * the path client "/folder1/.../folderN/filename.pdf" will be placed on the
+	 * server in the following format <br/>
 	 * "/rootRepository/repo/folder1/.../folderN/filename - PDF/filename-v
 	 * <version_number>.pdf
 	 * 
@@ -298,10 +290,11 @@ public class EdGitRepositoryManager {
 		public void resolve(Path path) {
 			extension = getExtension(path.getFileName().toString());
 			pureFilename = removeExtension(path.getFileName().toString());
-			Path pathWithoutExtension = Paths.get(removeExtension(path.toString()));
-			directory = directoryPath(pathWithoutExtension,
+			Path parent = path.getParent();
+			directory = directoryPath(parent, pureFilename.trim(),
 					String.format("%s" + MARK + "%s", pureFilename, extension.substring(1).toUpperCase()));
 			indexFile = indexFilePath(directory, pureFilename);
+
 		}
 
 		private String getExtension(final String filename) {
@@ -314,8 +307,8 @@ public class EdGitRepositoryManager {
 			return filename.substring(0, endIndex);
 		}
 
-		private Path directoryPath(final Path path, final String directoryName) {
-			return Paths.get(path.getParent().toString(), directoryName);
+		private Path directoryPath(final Path path, final String directory, final String directoryForExtension) {
+			return Paths.get(path.toString(), directory, directoryForExtension);
 		}
 
 		private Path indexFilePath(final Path path, String name) {
@@ -328,19 +321,19 @@ public class EdGitRepositoryManager {
 	}
 
 	/**
-	 * Class that will apply file manipulation rules in the remote repository of
-	 * the client.
+	 * Class that will apply file manipulation rules in the remote repository of the
+	 * client.
 	 * <p>
-	 * For a given path, which is a file, gets the name of the index file, and
-	 * gets the file with the corresponding version {@code version} in the name.
-	 * It also gets the unversioned filename.
+	 * For a given path, which is a file, gets the name of the index file, and gets
+	 * the file with the corresponding version {@code version} in the name. It also
+	 * gets the unversioned filename.
 	 *
 	 */
 	static class FoldPathResolver implements PathResolver {
 
 		private String extension;
 		private Path directory;
-		private Path directoryName;
+		private String directoryName;
 		private Path indexFile;
 
 		/**
@@ -350,12 +343,20 @@ public class EdGitRepositoryManager {
 		public FoldPathResolver(Path path) {
 			resolve(path);
 		}
+		
+		public static void main(String[] args) {
+			Path path = Paths.get("C:\\Users\\Eduardo\\Desktop\\Ze\\nome com espaco\\nome com espaco  # TXT");
+			System.out.println(path);
+			FoldPathResolver resolver = new FoldPathResolver(path);
+			Path fileNewVersion = resolver.getVersionedFilename(2);
+			System.out.println(fileNewVersion);
+		}
 
 		public void resolve(Path path) {
 			directory = path;
 			extension = "." + directory.getFileName().toString().split(MARK)[1].toLowerCase();
-			directoryName = Paths.get(directory.getFileName().toString().split(MARK)[0]);
-			indexFile = Paths.get(String.format("%s.index.txt", directory.resolve(directoryName)));
+			directoryName = directory.getFileName().toString().split(MARK)[0];
+			indexFile = directory.resolve(directoryName + ".index.txt");
 		}
 
 		public Path getDirectory() {
@@ -367,14 +368,13 @@ public class EdGitRepositoryManager {
 		}
 
 		public Path getVersionedFilename(int newVersion) {
-			return Paths.get(String.format("%s-v%d%s", directory.resolve(directoryName), newVersion, extension));
+			return Paths.get(String.format("%s%d%s", directory.resolve(directoryName + "-v"), newVersion, extension));
 		}
 
 		/**
 		 * Converts a versioned name to an unversioned name
 		 * 
-		 * @param path
-		 *            The path to convert
+		 * @param path The path to convert
 		 * @requires path must be a versioned file name
 		 * @return an unversioned name
 		 */
