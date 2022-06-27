@@ -14,7 +14,8 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 @Named
 @ViewScoped
@@ -27,12 +28,15 @@ public class HomePage implements Serializable {
 
 	@Inject
 	private RepositoryManager repositoryManager;
-
+	
 	@Inject
-	private FileUploader fileUploader;
+	private FileServiceImpl fileService;
 
-	@Inject
-	private FileDownloader fileDownloader;
+//	@Inject
+//	private FileUploader fileUploader;
+
+//	@Inject
+//	private FileDownloader fileDownloader;
 
 	private List<GitFile> repositories = new ArrayList<>();
 
@@ -62,13 +66,13 @@ public class HomePage implements Serializable {
 	}
 
 	public String upload() throws ServletException, IOException {
-		 return fileUploader.upload(part);
+		 return fileService.upload(part);
 	}
 
 	public String download() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
 		String filename = params.get("repositoryName");
-		return fileDownloader.download(filename);
+		return fileService.download(filename);
 	}	
 }

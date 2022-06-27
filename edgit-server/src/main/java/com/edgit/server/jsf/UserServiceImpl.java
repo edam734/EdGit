@@ -8,9 +8,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.naming.NamingException;
 
-import com.edgit.server.domain.User;
-import com.edgit.server.filesystem.EdGitRepositoryManager;
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.domain.User;
+import com.edgit.domain.User;
+import com.edgit.filesystem.EdGitRepositoryUtils;
+//import com.edgit.server.filesystem.EdGitRepositoryManager;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 import com.edgit.server.jsf.handlers.ServerRepositoryHandler;
 import com.edgit.server.jsf.util.Authentication;
 import com.edgit.server.services.AuthenticationService;
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
 		// save user
 		authenticationService.save(user);
 		// Create the remote repository for this user
-		EdGitRepositoryManager.makeDirectory(
+		EdGitRepositoryUtils.makeDirectory(
 				new File(ServerRepositoryHandler.REPOSITORY_ROOT_LOCATION + File.separator + user.getUsername()));
 	}
 }

@@ -7,7 +7,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 @Named
 @ViewScoped

@@ -3,7 +3,8 @@ package com.edgit.server.jsf;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 public interface RepositoryService {
 

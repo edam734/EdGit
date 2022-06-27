@@ -7,7 +7,8 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 public class LdapPartitionManager {
 

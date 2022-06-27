@@ -7,7 +7,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 public class GitFileDAO {
 

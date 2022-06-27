@@ -16,8 +16,10 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
 
-import com.edgit.server.domain.User;
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.domain.User;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.User;
+import com.edgit.domain.GitFile;
 
 public class LdapServer implements Serializable {
 

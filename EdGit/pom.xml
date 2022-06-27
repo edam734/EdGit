@@ -15,8 +15,11 @@
 
 	<modules>
 		<module>edgit-commons</module>
-		<module>edgit-server</module>
+<!-- 		<module>edgit-server</module> -->
 		<module>edgit-client</module>
+		<module>filesystem</module>
+		<module>domain</module>
+		<module>application</module>
 	</modules>
 
 	<dependencies>

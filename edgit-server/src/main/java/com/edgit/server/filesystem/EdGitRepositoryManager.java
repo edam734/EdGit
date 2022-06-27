@@ -21,7 +21,7 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.edgit.commons.network.BinamedFile;
+import com.edgit.filesystem.BinamedFile;
 import static com.edgit.server.filesystem.EdGitRepositoryManager.BooleanResult.BooleanMessage.*;
 
 /**
@@ -271,6 +271,20 @@ public class EdGitRepositoryManager {
 		private Path directory;
 		private Path indexFile;
 
+		public UnfoldPathResolver(Path path) {
+			resolve(path);
+		}
+		
+		public void resolve(Path path) {
+			extension = getExtension(path.getFileName().toString());
+			pureFilename = removeExtension(path.getFileName().toString());
+			Path parent = path.getParent();
+			directory = directoryPath(parent, pureFilename.trim(),
+					String.format("%s" + MARK + "%s", pureFilename, extension.substring(1).toUpperCase()));
+			indexFile = indexFilePath(directory, pureFilename);
+			
+		}
+
 		public Path getDirectory() {
 			return directory;
 		}
@@ -281,20 +295,6 @@ public class EdGitRepositoryManager {
 
 		public Path getVersionedFilename(final int newVersion) {
 			return filePath(directory, pureFilename, newVersion);
-		}
-
-		public UnfoldPathResolver(Path path) {
-			resolve(path);
-		}
-
-		public void resolve(Path path) {
-			extension = getExtension(path.getFileName().toString());
-			pureFilename = removeExtension(path.getFileName().toString());
-			Path parent = path.getParent();
-			directory = directoryPath(parent, pureFilename.trim(),
-					String.format("%s" + MARK + "%s", pureFilename, extension.substring(1).toUpperCase()));
-			indexFile = indexFilePath(directory, pureFilename);
-
 		}
 
 		private String getExtension(final String filename) {

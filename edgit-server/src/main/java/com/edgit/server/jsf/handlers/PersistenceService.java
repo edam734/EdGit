@@ -6,7 +6,8 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 public interface PersistenceService {
 	

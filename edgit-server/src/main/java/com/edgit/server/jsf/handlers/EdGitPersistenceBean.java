@@ -15,11 +15,12 @@ import javax.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 import com.edgit.server.jpa.dao.GitFileDAO;
 
 @Stateless
-public class EdGitPersistenceBean implements PersistenceService { 
+public class EdGitPersistenceBean implements PersistenceService {
 
 	public static final String PUNIT_NAME = "edgitserverPU";
 
@@ -94,17 +95,13 @@ public class EdGitPersistenceBean implements PersistenceService {
 	}
 
 	/**
-	 * Creates an entry in the GitFile table of the database (if it does not
-	 * already exist)
+	 * Creates an entry in the GitFile table of the database (if it does not already
+	 * exist)
 	 * 
-	 * @param path
-	 *            The path to this entry
-	 * @param filename
-	 *            The file name if this entry is a file (null otherwise)
-	 * @param repo
-	 *            The root repository of this user
-	 * @param description
-	 *            The description for this entry
+	 * @param path        The path to this entry
+	 * @param filename    The file name if this entry is a file (null otherwise)
+	 * @param repo        The root repository of this user
+	 * @param description The description for this entry
 	 * @return
 	 */
 	public boolean createEntry(Path path, String filename, GitFile repo, String description) {
@@ -136,13 +133,11 @@ public class EdGitPersistenceBean implements PersistenceService {
 	}
 
 	/**
-	 * Returns a PathWrapper with the Path of the entry yet to be created and
-	 * the parent to which this path will connect.
+	 * Returns a PathWrapper with the Path of the entry yet to be created and the
+	 * parent to which this path will connect.
 	 * 
-	 * @param path
-	 *            The Path yet to be created
-	 * @param parent
-	 *            The parent where the path will connect
+	 * @param path   The Path yet to be created
+	 * @param parent The parent where the path will connect
 	 * @return a PathWrapper
 	 */
 	private PathWrapper getReminderPath(Path path, GitFile parent) {
@@ -158,23 +153,20 @@ public class EdGitPersistenceBean implements PersistenceService {
 	}
 
 	/**
-	 * A recursive method that returns a PathWrapper with the path yet to be
-	 * created in the GitFile table of the database, and with the "parent" to
-	 * which this path should connect. <br/>
+	 * A recursive method that returns a PathWrapper with the path yet to be created
+	 * in the GitFile table of the database, and with the "parent" to which this
+	 * path should connect. <br/>
 	 * For example, we have the path a/b/c/d/e/f. If there are entries in the
-	 * database that correspond to the path a/b/c, the PathWrapper will contain
-	 * the Path d/e/f with c as the parent. If the Path is null, then there is
-	 * no path to be persisted, and the parent will be the equivalent of the
-	 * root repository of this user.
+	 * database that correspond to the path a/b/c, the PathWrapper will contain the
+	 * Path d/e/f with c as the parent. If the Path is null, then there is no path
+	 * to be persisted, and the parent will be the equivalent of the root repository
+	 * of this user.
 	 * 
-	 * @param dao
-	 *            The dao responsible of finding a particular entry in the
-	 *            GitFile table
-	 * @param iterator
-	 *            The iterator of the path that advances one step by each
-	 *            recursion
-	 * @param parent
-	 *            The last existing father who was found
+	 * @param dao      The dao responsible of finding a particular entry in the
+	 *                 GitFile table
+	 * @param iterator The iterator of the path that advances one step by each
+	 *                 recursion
+	 * @param parent   The last existing father who was found
 	 * @return a PathWrapper
 	 */
 	private PathWrapper getReminderPath(GitFileDAO dao, Iterator<Path> iterator, GitFile parent) {

@@ -9,7 +9,8 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 import com.edgit.server.jsf.handlers.PersistenceService;
 
 @ApplicationScoped

@@ -7,7 +7,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.edgit.server.jpa.GitFile;
+//import com.edgit.server.jpa.GitFile;
+import com.edgit.domain.GitFile;
 
 @Stateless
 public class RepositoryManager {

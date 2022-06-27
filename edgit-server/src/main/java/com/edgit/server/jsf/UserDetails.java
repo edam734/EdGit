@@ -6,7 +6,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.edgit.server.domain.User;
+//import com.edgit.server.domain.User;
+import com.edgit.domain.User;
 
 @Named
 @ViewScoped

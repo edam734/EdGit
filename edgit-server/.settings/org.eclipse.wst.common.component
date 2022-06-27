@@ -4,7 +4,10 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="edgit-commons-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/edgit-commons/edgit-commons">
+        <dependent-module archiveName="filesystem-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/filesystem/filesystem">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="domain-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/domain/domain">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="edgit-server"/>

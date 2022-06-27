@@ -12,7 +12,8 @@ import javax.transaction.UserTransaction;
 
 import org.slf4j.Logger;
 
-import com.edgit.server.domain.User;
+//import com.edgit.server.domain.User;
+import com.edgit.domain.User;
 
 @Named
 @SessionScoped
